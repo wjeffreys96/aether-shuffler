@@ -1,4 +1,4 @@
-export default function GetData(colorId, cardType, random_number) {
+export default function GetData({colorId:colorId, type:cardType, page:random_number}) {
     const params = {
         "q": `f:commander ci:${colorId} t:${cardType} order:edhrec dir:asc`,
         "page": `${random_number}`

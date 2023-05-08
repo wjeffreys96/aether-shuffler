@@ -1,8 +1,9 @@
 import GetData from "./components/GetData"
 
 export default async function Home() {
+  const params = {colorId: "b", type:"creature", page:1};
 
-  const response = await GetData("b", "creature", 1);
+  const response = await GetData(params);
   const data = response.data;
   let names = [];
 
