@@ -1,5 +1,5 @@
 export default async function Home() {
-
+  const params = {colorId: "b", type:"creature", page:1};
 
   return (
     <main className="w-full">
