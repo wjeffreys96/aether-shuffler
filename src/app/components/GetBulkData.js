@@ -1,6 +1,5 @@
 import fs from "fs";
 import https from "https";
-import path from "path";
 
 export default async function GetBulkData() {
   const downloadLink = await fetch("https://api.scryfall.com/bulk-data");
