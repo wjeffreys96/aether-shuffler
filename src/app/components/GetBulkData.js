@@ -1,55 +1,24 @@
-import fs from 'fs';
-import https from 'https';
-import path from 'path';
-
-const downloadFile = (url, filePath) => {
-  const file = fs.createWriteStream(filePath);
-  return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
-      response.pipe(file);
-      file.on('finish', () => {
-        file.close(() => {
-          resolve();
-        });
-      });
-    }).on('error', (error) => {
-      fs.unlink(filePath, () => {
-        reject(error);
-      });
-    });
-  });
-};
-
-const replaceFile = () => {
-  try {
-    if (fs.existsSync('./data/bulkData.json')) {
-      fs.unlinkSync('./data/bulkData.json');
-    }
-    fs.renameSync('./data/bulkData.json.temp', './data/bulkData.json');
-    console.log('File replaced successfully');
-  } catch (error) {
-    console.error(`Failed to replace file: ${error}`);
-  }
-};
+import fs from "fs";
+import https from "https";
+import path from "path";
 
 export default async function GetBulkData() {
-  const url = "https://api.scryfall.com/bulk-data";
-  const fileName = 'bulkData.json';
-  const tempFileName = `${fileName}.temp`;
-  const dataDir = path.join(__dirname, '..', 'data');
-  const oldFilePath = path.join(dataDir, fileName);
-  const tempFilePath = path.join(dataDir, tempFileName);
+  const downloadLink = await fetch("https://api.scryfall.com/bulk-data");
+  const downloadLinkJson = await downloadLink.json();
+  const url = downloadLinkJson.data[3]["download_uri"];  
 
-  try {
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir);
-    }
-    await downloadFile(url, tempFilePath);
-    replaceFile(oldFilePath, tempFilePath);
-    fs.unlinkSync(tempFilePath);
-    console.log('File replaced successfully');
-  } catch (error) {
-    console.error(error);
-    console.log('Failed to replace file');
-  }
-};
+  console.log("Downloading Bulk Data...")
+  const file = fs.createWriteStream("bulk-data.json");
+
+  const request = https.get(url, function(response) {
+   response.pipe(file);
+
+   // after download completed close filestream
+   file.on("finish", () => {
+       file.close();
+       console.log("Download Completed");
+   });
+});
+
+
+}

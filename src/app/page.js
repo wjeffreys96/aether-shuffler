@@ -1,5 +1,4 @@
 import GetBulkData from "./components/GetBulkData";
-import GetData from "./components/GetData";
 import SelectMenu from "./components/UI/Inputs/SelectMenu";
 
 export default async function Home() {
