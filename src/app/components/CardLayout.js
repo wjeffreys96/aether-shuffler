@@ -1,7 +1,7 @@
-export default function CardLayout({ className, name, text, key }) {
+export default function CardLayout({name, text }) {
   return (
-    <div className={className}>
-      <li key={key}>
+    <div>
+      <li key={name}>
         <h3 className="font-bold">{name}</h3>
         <p>{text}</p>
         <br />
