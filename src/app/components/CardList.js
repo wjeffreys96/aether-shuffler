@@ -1,21 +1,14 @@
 import CardLayout from "./CardLayout";
 
-export default function CardList({ cardArray }) {
+export default function CardList({ image_uris }) {
+  console.log("CardList", image_uris);
   return (
     <div className="flex flex-col w-full h-full m-5">
-      <div className="flex justify-center ">
-        <div className="w-1/2 h-auto px-3">
-          <ul className="m-2 flex">
-            {cardArray.map((card) => (
-              <div>
-                <CardLayout
-                  name={card.name}
-                  key={card.name}
-                  text={card.oracle_text}
-                />
-              </div>
-            ))}
-          </ul>
+      <div className="">
+        <div className="h-auto flex flex-wrap justify-center px-3">
+          {image_uris.map((card) => {
+            return <CardLayout key={Math.random()} img_uri={card} />;
+          })}
         </div>
       </div>
     </div>

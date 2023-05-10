@@ -5,22 +5,24 @@ import CardList from "./components/CardList";
 
 export default function Home() {
   const [cardArray, setCardArray] = useState([]);
-  const reducedCards = cardArray.slice(0, 10);
+  const [image_uris, setImg_uris] = useState([]);
 
-  const handleCardSubmit = (cardArray) => {
-    console.log(cardArray);
-    setCardArray(cardArray);
+  const onFormSubmit = (cardArray) => {
+    console.log("CardArray Page",cardArray.cardArray)
+    console.log("Uris Page", cardArray.uris)
+    setCardArray(cardArray.CardArray);
+    setImg_uris(cardArray.uris)
   };
 
   return (
     <main className="w-full">
-
       <div className="flex content-center justify-center p-3">
-        <CardForm onFormSubmit={handleCardSubmit} />
+        <CardForm onFormSubmit={onFormSubmit} />
       </div>
 
-      <CardList cardArray={reducedCards} />
-
+      <div className="flex content-center justify-center p-3">
+        <CardList image_uris={image_uris} cardArray={cardArray} />
+      </div>
     </main>
   );
 }

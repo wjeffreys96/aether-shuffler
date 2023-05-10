@@ -106,8 +106,9 @@ export default function CardForm({ onFormSubmit }) {
 
     const sendForm = async () => {
       const data = await GetData(info);
-      const reducedArray = data.slice(0, 10);
-      onFormSubmit(reducedArray);
+      console.log("data", data);
+      onFormSubmit(data);
+
     };
 
     if (formIsValid) {
@@ -192,13 +193,13 @@ export default function CardForm({ onFormSubmit }) {
                   htmlFor="page"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Page:
+                  Obscurity Modifier:
                 </label>
                 <div className="mt-2">
                   <input
                     type="number"
                     min="1"
-                    max="10"
+                    max="5"
                     placeholder="1"
                     onChange={handlePageChange}
                     ref={pageRef}

@@ -1,12 +1,11 @@
-export default function CardLayout({name, text }) {
+export default function CardLayout({ name, id, img_uri }) {
   return (
-    <div>
-      <li key={name}>
-        <h3 className="font-bold">{name}</h3>
-        <p>{text}</p>
+    <>
+      <div key={id}>
+        <img height="75%" width="75%" src={img_uri} alt={name} />
         <br />
         <hr />
-      </li>
-    </div>
+      </div>
+    </>
   );
 }
