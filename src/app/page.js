@@ -7,7 +7,6 @@ export default function Home() {
   const [cardData, setcardData] = useState([]);
 
   const onFormSubmit = (cardData) => {
-    console.log("cardData in Page.js", cardData)
     setcardData(cardData);
   };
 

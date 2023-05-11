@@ -17,7 +17,7 @@ export default async function GetData({
 
   function selectRandomCards(array, numCards) {
     const randomSubset = [];
-  
+
     for (let i = 0; i < numCards; i++) {
       const randomIndex = Math.floor(Math.random() * array.length);
       const selectedCard = array.splice(randomIndex, 1)[0];
@@ -29,8 +29,6 @@ export default async function GetData({
   const response = await fetcher(url);
 
   const randomCards = selectRandomCards(response, 25);
-
-  console.log("Random Cards:", randomCards);
 
   const cardData = randomCards.map((card) => {
     const name = card.name;
@@ -45,8 +43,6 @@ export default async function GetData({
 
     return { name, id, imageUri };
   });
-
-  console.log("Card Data:", cardData);
 
   return cardData;
 }

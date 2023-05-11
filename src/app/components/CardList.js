@@ -3,7 +3,6 @@ import CardLayout from "./CardLayout";
 
 
 export default function CardList({ cardData }) {
-  console.log("CardData in CardList.js:", cardData);
   return (
     <div className="flex flex-col w-full h-full m-5">
       <div className="">
