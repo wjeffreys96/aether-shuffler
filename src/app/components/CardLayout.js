@@ -1,8 +1,12 @@
-export default function CardLayout({ name, id, img_uri }) {
+export default function CardLayout({ name, id, imageUri }) {
+  const handleImgClick = () => {
+    console.log("CardLayout", name, id, imageUri);
+  };
+
   return (
     <>
       <div key={id}>
-        <img height="75%" width="75%" src={img_uri} alt={name} />
+        <img className="cursor-pointer" onClick={handleImgClick} height="75%" width="75%" src={imageUri} alt={name} />
         <br />
         <hr />
       </div>
