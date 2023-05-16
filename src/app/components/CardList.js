@@ -4,9 +4,9 @@ import CardLayout from "./CardLayout";
 
 export default function CardList({ cardData }) {
   return (
-    <div className="flex flex-col w-full h-full m-5">
+    <div className="flex flex-col w-full h-full">
       <div className="">
-        <div className="h-auto flex flex-wrap justify-center px-3">
+        <div className="h-auto flex flex-wrap px-3">
           {cardData.map((card) => {
             return <CardLayout key={card.name} name={card.name} id={card.id} imageUri={card.imageUri} />;
           })}

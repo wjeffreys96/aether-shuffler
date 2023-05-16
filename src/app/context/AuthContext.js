@@ -1,30 +1,70 @@
-import React, { createContext, useState } from 'react';
-import { useRouter } from 'next/router';
+"use client"
+import React, { createContext, useReducer } from 'react';
 
-export const AuthContext = createContext();
+const initialState = {
+  user: null,
+  token: null,
+  isLoggedIn: false,
+  login: () => { },
+  logout: () => { },
+  test: 'test',
+};
+
+// reducer for updating the state
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      localStorage.setItem('token', JSON.stringify(action.payload.token));
+      return {
+        ...state,
+        user: action.payload.user,
+        token: action.payload.token,
+        isLoggedIn: true,
+      };
+    case 'LOGOUT':
+      localStorage.clear();
+      return {
+        ...state,
+        user: null,
+        token: null,
+        isLoggedIn: false,
+      };
+    // test action
+    case 'TEST':
+      console.log('authContext test ', action.payload)
+      return {
+        ...state,
+        test: 'test',
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const AuthContext = createContext(initialState);
 
 export const AuthProvider = ({ children }) => {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const login = (userData) => {
-    // Perform your login logic here, e.g., making an API request
-    // Once the user is logged in, set the user object and navigate to a protected route
-    setUser(userData);
-    router.push('/dashboard'); // Example protected route
+  // login action
+  const login = (user, token) => {
+    dispatch({ type: 'LOGIN', payload: { user, token } });
   };
 
+  // logout action
   const logout = () => {
-    // Perform your logout logic here, e.g., making an API request
-    // Once the user is logged out, reset the user object and navigate to the login page
-    setUser(null);
-    router.push('/login'); // Example login page route
+    dispatch({ type: 'LOGOUT' });
   };
 
   const authContextValue = {
-    user,
+    user: state.user,
+    isLoggedIn: state.isLoggedIn,
+    token: state.token,
     login,
     logout,
+    dispatch,
   };
 
   return (
