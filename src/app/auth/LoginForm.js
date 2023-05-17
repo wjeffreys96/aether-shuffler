@@ -1,11 +1,10 @@
 "use client";
 import firebase from "firebase/compat/app";
-import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
+import { signInWithPopup, getAuth, signInWithRedirect } from "firebase/auth";
+import { GithubAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -23,29 +22,33 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENTID,
 };
 
-export const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const provider = new GithubAuthProvider();
 
 export default function LoginForm() {
+  const loadFirebaseUI = useCallback(async () => {
+    const firebaseui = await import("firebaseui");
+
+    const ui =
+      firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
+    ui.start(".firebase-auth-container", {
+      signInOptions: [
+        {
+          provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          signInMethod:
+            firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
+          requireDisplayName: false,
+        },
+        firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      ],
+      signInSuccessUrl: "/",
+    });
+  }, []);
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const ui =
-        firebaseui.auth.AuthUI.getInstance() ||
-        new firebaseui.auth.AuthUI(auth);
-      ui.start(".firebase-auth-container", {
-        signInOptions: [
-          {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            signInMethod:
-              firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
-            requireDisplayName: false,
-          },
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        ],
-        signInSuccessUrl: "/",
-      });
-    }
+    loadFirebaseUI();
   }, []);
 
   return (
@@ -148,7 +151,6 @@ export default function LoginForm() {
                   </span>
                 </div>
               </div>
-
               <div className="firebase-auth-container pt-4"></div>
             </div>
           </div>
