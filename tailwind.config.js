@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: { crimson: ["Crimson Pro", "sans-serif"] },
-      fontSize: { xs: "1rem", sm: "1.2rem", base: "2rem", lg: "2.5rem" },
+      fontSize: { xs: "1rem", sm: "1.2rem", base: "1.6rem", lg: "2rem" },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

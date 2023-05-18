@@ -3,7 +3,7 @@ import firebase from "firebase/compat/app";
 import "firebaseui/dist/firebaseui.css";
 import { useEffect, useCallback } from "react";
 import { initializeApp } from "firebase/app";
-import { signInWithPopup, getAuth, signInWithRedirect } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { GithubAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
@@ -136,9 +136,14 @@ export default function LoginForm() {
                 </button>
               </div>
             </form>
+    <div className="flex justify-center my-6">
+      <p className="text-sm">Don't have an account? <a className="text-sm font-semibold text-indigo-600 hover:text-indigo-500" href="/auth/signup">Sign up here</a></p>
+    </div>
+            
+            
 
             <div>
-              <div className="relative mt-10">
+              <div className="relative mt-6">
                 <div
                   className="absolute inset-0 flex items-center"
                   aria-hidden="true"
