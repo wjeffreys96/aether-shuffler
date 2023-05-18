@@ -2,29 +2,10 @@
 import firebase from "firebase/compat/app";
 import "firebaseui/dist/firebaseui.css";
 import { useEffect, useCallback } from "react";
-import { initializeApp } from "firebase/app";
+import { firebaseApp } from "../../lib/firebase";
 import { getAuth } from "firebase/auth";
-import { GithubAuthProvider } from "firebase/auth";
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENTID,
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GithubAuthProvider();
+const auth = getAuth(firebaseApp);
 
 export default function LoginForm() {
   const loadFirebaseUI = useCallback(async () => {
@@ -43,7 +24,7 @@ export default function LoginForm() {
         firebase.auth.GithubAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       ],
-      signInSuccessUrl: "/",
+      signInSuccessUrl: "/authenticate",
     });
   }, []);
 
