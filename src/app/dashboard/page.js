@@ -1,36 +1,25 @@
 "use client";
 import { useContext, useState, componentDidMount, useEffect } from "react";
 import { AuthContext } from "../auth/AuthContext";
+import { PlusIcon } from "@heroicons/react/20/solid";
 
-const stats = [
-  { label: "Vacation days left", value: 12 },
-  { label: "Sick days left", value: 4 },
-  { label: "Personal days left", value: 2 },
-];
+const stats = [{ label: "Favorite Cards", value: 0 }];
 
 export default function Dashboard() {
-  const [userData, setUserData] = useState("");
+  const [user, setUser] = useState("");
 
   const ctx = useContext(AuthContext);
 
-  console.log("Dashboard userData", userData)
+  console.log("Dashboard user", user);
 
   useEffect(() => {
     if (ctx.user) {
-      setUserData(ctx.user);
+      setUser(ctx.user);
     }
   }, [ctx.user]);
 
-
-
-  const user = {
-    name: userData.displayName,
-    imageUrl:
-      userData.photoURL,
-  };
-
   return (
-    <div className="overflow-hidden rounded-lg bg-white shadow">
+    <div className="overflow-hidden rounded-lg">
       <h2 className="sr-only" id="profile-overview-title">
         Profile Overview
       </h2>
@@ -40,25 +29,16 @@ export default function Dashboard() {
             <div className="flex-shrink-0">
               <img
                 className="mx-auto h-20 w-20 rounded-full"
-                src={user.imageUrl}
+                src={user.photoURL}
                 alt=""
               />
             </div>
             <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
               <p className="text-sm font-medium text-gray-600">Welcome back,</p>
               <p className="text-xl font-bold text-gray-900 sm:text-2xl">
-                {user.name}
+                {user.displayName}
               </p>
-              <p className="text-sm font-medium text-gray-600">{user.role}</p>
             </div>
-          </div>
-          <div className="mt-5 flex justify-center sm:mt-0">
-            <a
-              href="#"
-              className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              View profile
-            </a>
           </div>
         </div>
       </div>
@@ -72,6 +52,24 @@ export default function Dashboard() {
             <span className="text-gray-600">{stat.label}</span>
           </div>
         ))}
+      </div>
+
+      <div className="text-center py-10 my-12">
+        <h3 className="mt-2 text-sm font-semibold text-gray-900">
+          No Cards
+        </h3>
+        <p className="mt-1 text-sm text-gray-500">
+          Get started by searching new cards with the shuffler.
+        </p>
+        <div className="mt-6">
+          <button
+            type="button"
+            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+            Find Cards
+          </button>
+        </div>
       </div>
     </div>
   );

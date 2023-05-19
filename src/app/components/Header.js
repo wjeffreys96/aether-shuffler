@@ -1,17 +1,22 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { AuthContext } from "../auth/AuthContext";
 import { useRouter } from "next/navigation";
 
-const navigation = [{ name: "", href: "#" }];
-
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navigation, setNavigation] = useState([]);
   const ctx = useContext(AuthContext);
   const router = useRouter();
+
+  useEffect(() => {
+    if (ctx.user !== null) {
+      setNavigation([{ name: "Dashboard", href: "/dashboard" }]);
+    }
+  }, [ctx.user]);
 
   const handleLogout = () => {
     ctx.dispatch({ type: "LOGOUT" });
@@ -26,10 +31,21 @@ export default function Header() {
       >
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
+            <span className="sr-only">Aether Shuffler</span>
             <span className="text-xl font-bold text-white">AetherShuffler</span>
           </a>
+          <div className="hidden lg:flex lg:gap-x-12 -m-1.5 p-1.5 mx-3">
+          {navigation.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className=" text-white"
+            >
+              <span className="text-xl text-white">{item.name}</span>
+            </a>
+          ))}
         </div>
+        </div> 
         <div className="flex lg:hidden">
           <button
             type="button"
@@ -40,17 +56,7 @@ export default function Header() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-sm font-semibold leading-6 text-white"
-            >
-              {item.name}
-            </a>
-          ))}
-        </div>
+        
 
         {!ctx.user ? (
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
