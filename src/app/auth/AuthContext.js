@@ -15,7 +15,7 @@ const reducer = (state, action) => {
     case "SETUSER":
       const user = action.payload;
       const token = user.accessToken;
-      console.log("authContext SETUSER ", user, token);
+      // console.log("authContext SETUSER ", user, token);
       return {
         ...state,
         user: user,

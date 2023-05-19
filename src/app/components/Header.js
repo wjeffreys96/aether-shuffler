@@ -4,12 +4,19 @@ import { useState, useContext } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { AuthContext } from "../auth/AuthContext";
+import { useRouter } from "next/navigation";
 
 const navigation = [{ name: "", href: "#" }];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const ctx = useContext(AuthContext);
+  const router = useRouter();
+
+  const handleLogout = () => {
+    ctx.dispatch({ type: "LOGOUT" });
+    router.push("/");
+  };
 
   return (
     <header className="bg-gray-800">
@@ -45,25 +52,25 @@ export default function Header() {
           ))}
         </div>
 
-        {!ctx.user ?
+        {!ctx.user ? (
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a
-            href="/auth"
-            className="text-sm font-semibold leading-6 text-white"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
-        </div>
-        :
-        <div className="">
-          <button className="text-sm font-semibold leading-6 text-white" onClick={() => ctx.dispatch({ type: "LOGOUT" })}>
-            Log out<span aria-hidden="true">&rarr;</span>
-          </button>
-          
-        </div>
-        } 
-
-
+            <a
+              href="/auth"
+              className="text-sm font-semibold leading-6 text-white"
+            >
+              Log in <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        ) : (
+          <div className="">
+            <button
+              className="text-sm font-semibold leading-6 text-white"
+              onClick={handleLogout}
+            >
+              Log out<span aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+        )}
       </nav>
       <Dialog
         as="div"

@@ -28,7 +28,7 @@ export default function LoginForm() {
         firebase.auth.GithubAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       ],
-      signInSuccessUrl: "/",
+      signInSuccessUrl: "/dashboard",
     });
   }, []);
 
