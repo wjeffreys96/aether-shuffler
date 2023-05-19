@@ -1,18 +1,22 @@
 "use client";
+import firebaseApp from "../../lib/firebase";
 import firebase from "firebase/compat/app";
 import "firebaseui/dist/firebaseui.css";
-import { useEffect, useCallback } from "react";
-import { firebaseApp } from "../../lib/firebase";
-import { getAuth } from "firebase/auth";
+import { useEffect, useCallback, useContext } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { AuthContext } from "../AuthContext";
 
 const auth = getAuth(firebaseApp);
 
 export default function LoginForm() {
+  let user;
+  const ctx = useContext(AuthContext);
   const loadFirebaseUI = useCallback(async () => {
     const firebaseui = await import("firebaseui");
 
     const ui =
       firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
+
     ui.start(".firebase-auth-container", {
       signInOptions: [
         {
@@ -24,7 +28,7 @@ export default function LoginForm() {
         firebase.auth.GithubAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       ],
-      signInSuccessUrl: "/authenticate",
+      signInSuccessUrl: "/",
     });
   }, []);
 
@@ -117,11 +121,17 @@ export default function LoginForm() {
                 </button>
               </div>
             </form>
-    <div className="flex justify-center my-6">
-      <p className="text-sm">Don't have an account? <a className="text-sm font-semibold text-indigo-600 hover:text-indigo-500" href="/auth/signup">Sign up here</a></p>
-    </div>
-            
-            
+            <div className="flex justify-center my-6">
+              <p className="text-sm">
+                Don't have an account?{" "}
+                <a
+                  className="text-sm font-semibold text-indigo-600 hover:text-indigo-500"
+                  href="/auth/signup"
+                >
+                  Sign up here
+                </a>
+              </p>
+            </div>
 
             <div>
               <div className="relative mt-6">

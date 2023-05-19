@@ -2,7 +2,6 @@
 
 import { useReducer, useRef } from "react";
 import Input from "@/app/components/UI/Inputs/Input";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const initialState = {
   email: "",
@@ -88,21 +87,7 @@ export default function RegisterForm() {
 
     if (formIsValid) {
       try {
-        const auth = getAuth();
         console.log("info", info);
-
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(user)
-            // ...
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-          });
       } catch (error) {
         console.log(error);
       }

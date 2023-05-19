@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { AuthContext } from "../auth/AuthContext";
 
-const navigation = [
-  { name: "", href: "#" },
-];
+const navigation = [{ name: "", href: "#" }];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const ctx = useContext(AuthContext);
 
   return (
     <header className="bg-gray-800">
@@ -20,9 +20,7 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <span className="text-xl font-bold text-white">
-              AetherShuffler
-            </span>
+            <span className="text-xl font-bold text-white">AetherShuffler</span>
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -46,11 +44,26 @@ export default function Header() {
             </a>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="/auth" className="text-sm font-semibold leading-6 text-white">
+
+        {!ctx.user ?
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a
+            href="/auth"
+            className="text-sm font-semibold leading-6 text-white"
+          >
             Log in <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
+        :
+        <div className="">
+          <button className="text-sm font-semibold leading-6 text-white" onClick={() => ctx.dispatch({ type: "LOGOUT" })}>
+            Log out<span aria-hidden="true">&rarr;</span>
+          </button>
+          
+        </div>
+        } 
+
+
       </nav>
       <Dialog
         as="div"
@@ -91,6 +104,7 @@ export default function Header() {
                   </a>
                 ))}
               </div>
+
               <div className="py-6">
                 <a
                   href="/auth"

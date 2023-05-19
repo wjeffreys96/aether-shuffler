@@ -1,39 +1,34 @@
-"use client"
-import React, { createContext, useReducer } from 'react';
+"use client";
+import React, { createContext, useEffect, useReducer } from "react";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import firebaseApp from "../lib/firebase";
+
+const auth = getAuth(firebaseApp);
 
 const initialState = {
   user: null,
   token: null,
-  isLoggedIn: false,
-  test: 'test',
 };
 
-// reducer for updating the state
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'LOGIN':
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
-      localStorage.setItem('token', JSON.stringify(action.payload.token));
+    case "SETUSER":
+      const user = action.payload;
+      const token = user.accessToken;
+      console.log("authContext SETUSER ", user, token);
       return {
         ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        isLoggedIn: true,
+        user: user,
+        token: token,
       };
-    case 'LOGOUT':
-      localStorage.clear();
+    case "LOGOUT":
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      signOut(auth);
       return {
         ...state,
         user: null,
         token: null,
-        isLoggedIn: false,
-      };
-    // test action
-    case 'TEST':
-      console.log('authContext test ', action.payload)
-      return {
-        ...state,
-        test: 'test',
       };
 
     default:
@@ -46,22 +41,19 @@ export const AuthContext = createContext(initialState);
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // login action
-  const login = (user, token) => {
-    dispatch({ type: 'LOGIN', payload: { user, token } });
-  };
-
-  // logout action
-  const logout = () => {
-    dispatch({ type: 'LOGOUT' });
-  };
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch({ type: "SETUSER", payload: user });
+      } else {
+        console.log("no user");
+      }
+    });
+  }, []);
 
   const authContextValue = {
     user: state.user,
-    isLoggedIn: state.isLoggedIn,
     token: state.token,
-    login,
-    logout,
     dispatch,
   };
 
