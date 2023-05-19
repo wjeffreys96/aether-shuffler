@@ -5,8 +5,6 @@ const initialState = {
   user: null,
   token: null,
   isLoggedIn: false,
-  login: () => { },
-  logout: () => { },
   test: 'test',
 };
 
