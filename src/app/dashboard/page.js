@@ -2,6 +2,8 @@
 import { useContext, useState, componentDidMount, useEffect } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { PlusIcon } from "@heroicons/react/20/solid";
+import { useRouter } from "next/navigation";
+import Avatar from "../components/UI/Avatar";
 
 const stats = [{ label: "Favorite Cards", value: 0 }];
 
@@ -9,6 +11,7 @@ export default function Dashboard() {
   const [user, setUser] = useState("");
 
   const ctx = useContext(AuthContext);
+  const router = useRouter();
 
   console.log("Dashboard user", user);
 
@@ -27,16 +30,20 @@ export default function Dashboard() {
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="sm:flex sm:space-x-5">
             <div className="flex-shrink-0">
-              <img
-                className="mx-auto h-20 w-20 rounded-full"
-                src={user.photoURL}
-                alt=""
-              />
+              {user.photoURL ? (
+                <img
+                  className="mx-auto h-20 w-20 rounded-full"
+                  src={user.photoURL}
+                  alt=""
+                />
+              ) : (
+                <Avatar size="large" />
+              )}
             </div>
             <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
-              <p className="text-sm font-medium text-gray-600">Welcome back,</p>
+              <p className="text-sm font-medium text-gray-600">Welcome,</p>
               <p className="text-xl font-bold text-gray-900 sm:text-2xl">
-                {user.displayName}
+                {user.displayName ? user.displayName : user.email}
               </p>
             </div>
           </div>
@@ -55,14 +62,15 @@ export default function Dashboard() {
       </div>
 
       <div className="text-center py-10 my-12">
-        <h3 className="mt-2 text-sm font-semibold text-gray-900">
-          No Cards
-        </h3>
+        <h3 className="mt-2 text-sm font-semibold text-gray-900">No Cards</h3>
         <p className="mt-1 text-sm text-gray-500">
           Get started by searching new cards with the shuffler.
         </p>
         <div className="mt-6">
           <button
+            onClick={() => {
+              router.push("/");
+            }}
             type="button"
             className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >

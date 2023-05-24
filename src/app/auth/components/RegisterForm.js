@@ -1,7 +1,11 @@
 "use client";
 
-import { useReducer, useRef } from "react";
+import { useReducer, useRef, useContext } from "react";
+import { AuthContext } from "../AuthContext";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import Input from "@/app/components/UI/Inputs/Input";
+import { useRouter } from 'next/navigation';
+
 
 const initialState = {
   email: "",
@@ -28,8 +32,8 @@ function reducer(state, action) {
       return { ...state, error: { ...state.error, general: action.error } };
     case "EMAIL_VALID":
       const emailIsValid =
-        action.value.trim().length > 0 && action.value.trim().length < 20;
-        console.l       
+        action.value.trim().length > 0 && action.value.trim().length < 50;
+      console.l;
       console.log(emailIsValid);
       return { ...state, emailValid: emailIsValid };
     case "PASSWORD_VALID":
@@ -47,11 +51,15 @@ function reducer(state, action) {
   }
 }
 
-export default function RegisterForm() {  
+export default function RegisterForm() {
+  const ctx = useContext(AuthContext);
+  const auth = getAuth();
   const [state, dispatch] = useReducer(reducer, initialState);
   const passwordRef = useRef(null);
   const passwordAgainRef = useRef(null);
   const emailRef = useRef(null);
+  const router = useRouter();
+
 
   const handleEmailBlur = () => {
     const email = emailRef.current.value;
@@ -76,29 +84,36 @@ export default function RegisterForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
     const formIsValid =
       state.emailValid && state.passwordValid && state.passwordAgainValid;
 
-    console.log(formIsValid)
+    console.log(formIsValid);
 
     if (formIsValid) {
-      try {
-        console.log("info", info);
-      } catch (error) {
-        console.log(error);
-      }
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("register: ", user);
+          ctx.dispatch({ type: "SETUSER", payload: user });
+          router.push('/dashboard');
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          dispatch({ type: "SET_ERROR", error: errorMessage });
+        });
     } else {
-      console.log("form is not valid")
+      console.log("form is not valid");
     }
   };
 
   return (
     <div className="space-y-10 divide-y divide-gray-900/10">
-      <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-2 gap-y-2 pt-10 md:grid-cols-3">
         <div className="px-4 sm:px-0">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Personal Information
@@ -107,7 +122,6 @@ export default function RegisterForm() {
             We'll never sell or give out your data.
           </p>
           <br />
-         
         </div>
 
         <form
@@ -115,7 +129,7 @@ export default function RegisterForm() {
           className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
         >
           <div className="px-4 py-6 sm:p-8">
-            <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="grid max-w-2xl grid-cols-1 gap-x-2 gap-y-2 sm:grid-cols-6">
               <div className="sm:col-span-4">
                 <label
                   htmlFor="email"
@@ -192,7 +206,6 @@ export default function RegisterForm() {
                   />
                 </div>
               </div>
-
             </div>
             <p className="text-sm text-red-600">{state.error.general}</p>
           </div>
@@ -208,7 +221,7 @@ export default function RegisterForm() {
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Save
+              Register
             </button>
           </div>
         </form>

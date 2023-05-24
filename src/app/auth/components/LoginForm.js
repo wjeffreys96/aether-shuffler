@@ -2,29 +2,49 @@
 import firebaseApp from "../../lib/firebase";
 import firebase from "firebase/compat/app";
 import "firebaseui/dist/firebaseui.css";
-import { useEffect, useCallback, useContext } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useCallback, useContext, useRef } from "react";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { AuthContext } from "../AuthContext";
+import { useRouter } from 'next/navigation';
 
 const auth = getAuth(firebaseApp);
 
 export default function LoginForm() {
-  let user;
+  const emailRef = useRef();
+  const passwordRef = useRef();
   const ctx = useContext(AuthContext);
+  const router = useRouter();
+
+  const handleSignin = (e) => {
+    e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("login: ", user);
+        ctx.dispatch({ type: "SETUSER", payload: user });
+        router.push('/dashboard');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
+
   const loadFirebaseUI = useCallback(async () => {
     const firebaseui = await import("firebaseui");
-
     const ui =
       firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
 
     ui.start(".firebase-auth-container", {
       signInOptions: [
-        {
-          provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          signInMethod:
-            firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
-          requireDisplayName: false,
-        },
         firebase.auth.GithubAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       ],
@@ -47,7 +67,7 @@ export default function LoginForm() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-8 shadow sm:rounded-lg sm:px-12">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6" onSubmit={handleSignin}>
               <div>
                 <label
                   htmlFor="email"
@@ -57,6 +77,7 @@ export default function LoginForm() {
                 </label>
                 <div className="mt-2">
                   <input
+                    ref={emailRef}
                     id="email"
                     name="email"
                     type="email"
@@ -76,6 +97,7 @@ export default function LoginForm() {
                 </label>
                 <div className="mt-2">
                   <input
+                    ref={passwordRef}
                     id="password"
                     name="password"
                     type="password"
@@ -86,22 +108,7 @@ export default function LoginForm() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-3 block text-sm leading-6 text-gray-900"
-                  >
-                    Remember me
-                  </label>
-                </div>
-
+              <div className="flex items-center justify-center">
                 <div className="text-sm leading-6">
                   <a
                     href="#"
@@ -111,7 +118,6 @@ export default function LoginForm() {
                   </a>
                 </div>
               </div>
-
               <div>
                 <button
                   type="submit"
