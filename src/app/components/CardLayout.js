@@ -5,9 +5,7 @@ import { AuthContext } from "../auth/AuthContext";
 export default function CardLayout({ name, id, imageUri }) {
   const ctx = useContext(AuthContext);
 
-  const handleImgClick = () => {
-    ctx.dispatch({ type: 'TEST', payload: name });
-  };
+  const handleImgClick = () => {};
 
   return (
     <>

@@ -1,4 +1,4 @@
-export default async function GetData({
+export default async function GetCards({
   color_id: colorId,
   card_type: cardType,
 }) {

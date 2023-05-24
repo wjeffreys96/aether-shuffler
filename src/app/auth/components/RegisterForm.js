@@ -1,28 +1,31 @@
 "use client";
-
 import { useReducer, useRef, useContext } from "react";
 import { AuthContext } from "../AuthContext";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import Input from "@/app/components/UI/Inputs/Input";
-import { useRouter } from 'next/navigation';
-
+import { useRouter } from "next/navigation";
+import RegisterNewUser from "@/app/utils/RegisterNewUser";
 
 const initialState = {
   email: "",
   password: "",
   passwordAgain: "",
+  username: "",
   emailValid: false,
   passwordValid: false,
   passwordAgainValid: false,
+  usernameValid: false,
   emailTouched: false,
   passwordTouched: false,
   passwordAgainTouched: false,
+  usernameTouched: false,
   formValid: false,
   error: {
     general: "",
     email_error: "",
     password_error: "",
     confirm_password_error: "",
+    username_error: "",
   },
 };
 
@@ -33,8 +36,6 @@ function reducer(state, action) {
     case "EMAIL_VALID":
       const emailIsValid =
         action.value.trim().length > 0 && action.value.trim().length < 50;
-      console.l;
-      console.log(emailIsValid);
       return { ...state, emailValid: emailIsValid };
     case "PASSWORD_VALID":
       const passwordIsValid =
@@ -44,6 +45,10 @@ function reducer(state, action) {
       const passwordAgainIsValid =
         action.value.trim().length > 0 && action.value.trim().length < 20;
       return { ...state, passwordAgainValid: passwordAgainIsValid };
+    case "USERNAME_VALID":
+      const usernameIsValid =
+        action.value.trim().length > 0 && action.value.trim().length < 50;
+      return { ...state, usernameValid: usernameIsValid };
     case "SET_FIELD_TOUCHED_TRUE":
       return { ...state, [action.field]: true };
     default:
@@ -58,8 +63,8 @@ export default function RegisterForm() {
   const passwordRef = useRef(null);
   const passwordAgainRef = useRef(null);
   const emailRef = useRef(null);
+  const usernameRef = useRef(null);
   const router = useRouter();
-
 
   const handleEmailBlur = () => {
     const email = emailRef.current.value;
@@ -75,39 +80,35 @@ export default function RegisterForm() {
 
   const handlePasswordAgainBlur = () => {
     const passwordAgain = passwordAgainRef.current.value;
-    console.log(passwordAgain);
     dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "passwordAgainTouched" });
-    console.log(state.passwordAgainTouched);
     dispatch({ type: "PASSWORDAGAIN_VALID", value: passwordAgain });
-    console.log(state.passwordAgainValid);
+  };
+
+  const handleUsernameBlur = () => {
+    const username = usernameRef.current.value;
+    dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "usernameTouched" });
+    dispatch({ type: "USERNAME_VALID", value: username });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
+    const username = usernameRef.current.value;
 
     const formIsValid =
-      state.emailValid && state.passwordValid && state.passwordAgainValid;
-
-    console.log(formIsValid);
+      state.emailValid &&
+      state.passwordValid &&
+      state.passwordAgainValid &&
+      state.usernameValid; // Added username validity check
 
     if (formIsValid) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log("register: ", user);
-          ctx.dispatch({ type: "SETUSER", payload: user });
-          router.push('/dashboard');
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          dispatch({ type: "SET_ERROR", error: errorMessage });
-        });
+      RegisterNewUser(auth, email, password, username, ctx, router);
     } else {
-      console.log("form is not valid");
+      dispatch({
+        type: "SET_ERROR",
+        error: "Please provide a valid email, password, and username", // Updated error message
+      });
     }
   };
 
@@ -148,6 +149,31 @@ export default function RegisterForm() {
                     placeholder="your@email.com"
                     className={`${
                       !state.emailValid && state.emailTouched
+                        ? "bg-red-100"
+                        : ""
+                    }`}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-4">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Username:
+                </label>
+                <div className="mt-2">
+                  <Input
+                    onBlur={handleUsernameBlur}
+                    ref={usernameRef}
+                    id="username"
+                    name="username"
+                    type="text"
+                    autoComplete="username"
+                    placeholder="Your Username"
+                    className={`${
+                      !state.usernameValid && state.usernameTouched
                         ? "bg-red-100"
                         : ""
                     }`}

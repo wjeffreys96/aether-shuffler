@@ -15,7 +15,6 @@ const reducer = (state, action) => {
     case "SETUSER":
       const user = action.payload;
       const token = user.accessToken;
-      // console.log("authContext SETUSER ", user, token);
       return {
         ...state,
         user: user,
@@ -45,8 +44,6 @@ export const AuthProvider = ({ children }) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch({ type: "SETUSER", payload: user });
-      } else {
-        console.log("no user");
       }
     });
   }, []);

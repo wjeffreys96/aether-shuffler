@@ -3,17 +3,13 @@ import firebaseApp from "../../lib/firebase";
 import firebase from "firebase/compat/app";
 import "firebaseui/dist/firebaseui.css";
 import { useEffect, useCallback, useContext, useRef } from "react";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 import { AuthContext } from "../AuthContext";
-import { useRouter } from 'next/navigation';
-
-const auth = getAuth(firebaseApp);
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const auth = getAuth(firebaseApp);
   const emailRef = useRef();
   const passwordRef = useRef();
   const ctx = useContext(AuthContext);
@@ -28,9 +24,8 @@ export default function LoginForm() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("login: ", user);
         ctx.dispatch({ type: "SETUSER", payload: user });
-        router.push('/dashboard');
+        router.push("/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -42,14 +37,26 @@ export default function LoginForm() {
     const firebaseui = await import("firebaseui");
     const ui =
       firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
-
-    ui.start(".firebase-auth-container", {
+    const uiConfig = {
       signInOptions: [
         firebase.auth.GithubAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       ],
-      signInSuccessUrl: "/dashboard",
-    });
+      callbacks: {
+        signInSuccessWithAuthResult: function (authResult) {
+          const db = getDatabase();
+          const user = authResult.user;
+          const userId = user.uid;
+          set(ref(db, "users/" + userId), {
+            username: user.displayName,
+          });
+          ctx.dispatch({ type: "SETUSER", payload: user });
+          router.push("/dashboard");
+        },
+      },
+    };
+
+    ui.start(".firebase-auth-container", uiConfig);
   }, []);
 
   useEffect(() => {

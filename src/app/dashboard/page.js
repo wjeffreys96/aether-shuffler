@@ -13,7 +13,6 @@ export default function Dashboard() {
   const ctx = useContext(AuthContext);
   const router = useRouter();
 
-  console.log("Dashboard user", user);
 
   useEffect(() => {
     if (ctx.user) {
