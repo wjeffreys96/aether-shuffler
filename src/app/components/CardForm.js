@@ -2,7 +2,7 @@
 
 import { useReducer, useRef } from "react";
 import Select from "./UI/Inputs/Select";
-import GetData from "./GetData";
+import GetCards from "../utils/GetCards";
 
 const initialState = {
   colorId: "",
@@ -89,7 +89,7 @@ export default function CardForm({ onFormSubmit }) {
     };
 
     const sendForm = async () => {
-      const data = await GetData(info);
+      const data = await GetCards(info);
       onFormSubmit(data);
 
     };

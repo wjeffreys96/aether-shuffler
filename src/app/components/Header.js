@@ -91,7 +91,7 @@ export default function Header() {
                           <span className="sr-only">Open user menu</span>
                          {user.photoURL ?
                           <img
-                            className="h-8 w-8 rounded-full"
+                            className="h-10 w-10 rounded-full"
                             src={user.photoURL}
                             alt=""
                           /> : <Avatar size="small" />
