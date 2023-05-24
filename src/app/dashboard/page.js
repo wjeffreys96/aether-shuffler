@@ -1,24 +1,43 @@
 "use client";
 import { useContext, useState, componentDidMount, useEffect } from "react";
 import { AuthContext } from "../auth/AuthContext";
+import { getDatabase, ref, onValue } from "firebase/database";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
 import Avatar from "../components/UI/Avatar";
-
-const stats = [{ label: "Favorite Cards", value: 0 }];
+import CardLayout from "../components/CardLayout";
 
 export default function Dashboard() {
   const [user, setUser] = useState("");
-
+  const [favorites, setFavorites] = useState([]);
   const ctx = useContext(AuthContext);
   const router = useRouter();
+  const stats = [{ label: "Favorite Cards", value: favorites.length }];
 
+  const getFavorites = () => {
+    const db = getDatabase();
+    const user = ctx.user;
+    const faveRef = ref(db, "users/" + user.uid + "/favorites");
+    onValue(faveRef, (snapshot) => {
+      const dataArray = [];
+      const data = snapshot.val();
+      for (let key in data) {
+        dataArray.push(data[key]);
+      }
+      setFavorites(dataArray);
+    });
+  };
 
   useEffect(() => {
     if (ctx.user) {
       setUser(ctx.user);
+      getFavorites();
     }
   }, [ctx.user]);
+
+  useEffect(() => {
+    console.log("favorites: ", favorites);
+  }, [favorites]);
 
   return (
     <div className="overflow-hidden rounded-lg">
@@ -59,12 +78,30 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
-
-      <div className="text-center py-10 my-12">
-        <h3 className="mt-2 text-sm font-semibold text-gray-900">No Cards</h3>
-        <p className="mt-1 text-sm text-gray-500">
-          Get started by searching new cards with the shuffler.
-        </p>
+      <div className="text-center my-12">
+        {!favorites && (
+          <div>
+            <h3 className="mt-2 text-sm font-semibold text-gray-900">
+              No Cards
+            </h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Get started by searching new cards with the shuffler.
+            </p>
+          </div>
+        )}
+        <div className="h-auto flex justify-center flex-wrap px-3">
+          {favorites.length > 0 &&
+            favorites.map((card) => {
+              return (
+                <CardLayout
+                  key={card.name}
+                  name={card.name}
+                  id={card.id}
+                  imageUri={card.imageUri}
+                />
+              );
+            })}
+        </div>
         <div className="mt-6">
           <button
             onClick={() => {
