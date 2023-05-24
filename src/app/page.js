@@ -1,21 +1,29 @@
-import GetData from "./components/GetData"
+"use client";
+import { useState, useContext, useEffect } from "react";
+import CardForm from "./components/CardForm";
+import CardList from "./components/CardList";
+import { AuthContext } from "./auth/AuthContext";
 
-export default async function Home() {
-  const params = {colorId: "b", type:"creature", page:1};
 
-  const response = await GetData(params);
-  const data = response.data;
-  let names = [];
+export default function Home() {
+  const [cardData, setcardData] = useState([]);
 
-  data.forEach(obj => {
-    names.push(obj.name + " ");
-  });
+
+  const onFormSubmit = (cardData) => {
+    setcardData(cardData);
+  };
+
+  const ctx = useContext(AuthContext);
 
   return (
-    <main className='w-full'>
-      <div className='flex flex-col w-full h-full m-5'>
-        <ul>{names.map((name) => (<li>{name}</li>))}</ul>
+    <main className="w-full">
+      <div className="flex content-center justify-center p-3">
+        <CardForm onFormSubmit={onFormSubmit} />
+      </div>
+
+      <div className="flex content-center justify-center p-3">
+        <CardList cardData={cardData} />
       </div>
     </main>
-  )
+  );
 }
