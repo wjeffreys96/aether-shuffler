@@ -2,9 +2,9 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./auth/AuthContext";
 
-const inter = Inter({ subsets: ["latin"] });
+
 
 export const metadata = {
   title: "",
@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html className="h-full bg-gray-100" lang="en">
-      <body className={inter.className + " h-full"}>
+      <body className="h-full text-base font-crimson">
         <AuthProvider >
           <Header />
           {children}

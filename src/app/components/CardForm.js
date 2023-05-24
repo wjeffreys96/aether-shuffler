@@ -1,7 +1,7 @@
 "use client";
 
 import { useReducer, useRef } from "react";
-import Input from "./UI/Inputs/Input";
+import Select from "./UI/Inputs/Select";
 import GetData from "./GetData";
 
 const initialState = {
@@ -102,7 +102,7 @@ export default function CardForm({ onFormSubmit }) {
 
   return (
     <div className="space-y-10 divide-y divide-gray-900/10">
-      <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-8 gap-y-2 pt-10 md:grid-cols-3">
         <div className="px-4 sm:px-0">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Card Parameters
@@ -128,7 +128,7 @@ export default function CardForm({ onFormSubmit }) {
                   Color:
                 </label>
                 <div className="mt-2">
-                  <Input
+                  <Select
                     options={colorIdOptions}
                     className={
                       !state.colorIdValid &&
@@ -153,7 +153,7 @@ export default function CardForm({ onFormSubmit }) {
                   Card Type:
                 </label>
                 <div className="mt-2">
-                  <Input
+                  <Select
                     options={cardTypeOptions}
                     onBlur={handleCardTypeBlur}
                     ref={cardTypeRef}

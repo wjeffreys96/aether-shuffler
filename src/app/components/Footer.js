@@ -1,11 +1,6 @@
 const navigation = {
   main: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Accessibility", href: "#" },
-    { name: "Partners", href: "#" },
+    { name: "", href: "#" },
   ],
   social: [
     {
@@ -74,7 +69,7 @@ const navigation = {
 
 export default function Footer() {
   return (
-    <footer className=" sticky top-[100vh] bg-slate-900">
+    <footer className=" sticky top-[100vh] bg-gray-800">
       <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
         <nav
           className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
@@ -104,7 +99,7 @@ export default function Footer() {
           ))}
         </div>
         <p className="mt-10 text-center text-xs leading-5 text-gray-500">
-          &copy; 2020 Your Company, Inc. All rights reserved.
+          &copy; 2023 William Jeffreys, All rights reserved.
         </p>
       </div>
     </footer>

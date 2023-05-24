@@ -1,6 +1,6 @@
 "use client"
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../auth/AuthContext";
 
 export default function CardLayout({ name, id, imageUri }) {
   const ctx = useContext(AuthContext);
