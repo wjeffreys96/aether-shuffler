@@ -1,7 +1,7 @@
 "use client";
-import { useContext, useState, componentDidMount, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../auth/AuthContext";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
 import Avatar from "../components/UI/Avatar";
@@ -13,11 +13,15 @@ export default function Dashboard() {
   const ctx = useContext(AuthContext);
   const router = useRouter();
   const stats = [{ label: "Favorite Cards", value: favorites.length }];
+  const db = getDatabase();
+
+  const handleDelete = (id) => {
+    const deleteRef = ref(db, "users/" + ctx.user.uid + "/favorites/" + id);
+    remove(deleteRef);
+  };
 
   const getFavorites = () => {
-    const db = getDatabase();
-    const user = ctx.user;
-    const faveRef = ref(db, "users/" + user.uid + "/favorites");
+    const faveRef = ref(db, "users/" + ctx.user.uid + "/favorites");
     onValue(faveRef, (snapshot) => {
       const dataArray = [];
       const data = snapshot.val();
@@ -34,10 +38,6 @@ export default function Dashboard() {
       getFavorites();
     }
   }, [ctx.user]);
-
-  useEffect(() => {
-    console.log("favorites: ", favorites);
-  }, [favorites]);
 
   return (
     <div className="overflow-hidden rounded-lg">
@@ -67,6 +67,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
       <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
         {stats.map((stat) => (
           <div
@@ -78,6 +79,7 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
+
       <div className="text-center my-12">
         {!favorites && (
           <div>
@@ -89,19 +91,34 @@ export default function Dashboard() {
             </p>
           </div>
         )}
+
         <div className="h-auto flex justify-center flex-wrap px-3">
           {favorites.length > 0 &&
             favorites.map((card) => {
               return (
-                <CardLayout
-                  key={card.name}
-                  name={card.name}
-                  id={card.id}
-                  imageUri={card.imageUri}
-                />
+                <div key={card.id} className="flex flex-col">
+                  <CardLayout
+                    key={card.name}
+                    name={card.name}
+                    id={card.id}
+                    imageUri={card.imageUri}
+                  />
+                  <div className="flex justify-center">
+                    <button
+                      // key={card.name}
+                      className="bg-red-500 hover:bg-red-700 text-white text-sm px-2 rounded"
+                      onClick={() => {
+                        handleDelete(card.id);
+                      }}
+                    >
+                      Remove From Favorites
+                    </button>
+                  </div>
+                </div>
               );
             })}
         </div>
+
         <div className="mt-6">
           <button
             onClick={() => {
