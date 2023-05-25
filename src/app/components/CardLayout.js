@@ -17,7 +17,7 @@ export default function CardLayout({ name, id, imageUri, onClick, isOverlay, isF
                 AddToFavorites(name, id, imageUri);
               }}
             >
-              <span className="text-white text-base">
+              <span className="text-white text-lg">
                 {isFavorited ? '✔' : '+'}
               </span>
             </button>
