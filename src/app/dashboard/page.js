@@ -118,7 +118,7 @@ export default function Dashboard() {
               );
             })}
         </div>
-
+            <hr className="m-12" /> 
         <div className="mt-6">
           <button
             onClick={() => {

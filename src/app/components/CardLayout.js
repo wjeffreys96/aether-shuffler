@@ -11,13 +11,13 @@ export default function CardLayout({ name, id, imageUri, onClick, isOverlay, isF
         {isOverlay && (
           <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full" onClick={handleOverlayClick}>
             <button
-              className={`w-24 h-24 flex items-center justify-center opacity-50 hover:opacity-75 rounded-full bg-black ${isFavorited ? 'bg-green-500' : ''}`}
+              className='w-24 h-24 flex items-center justify-center opacity-50 hover:opacity-75 rounded-full bg-black'
               onClick={(event) => {
                 event.stopPropagation();
                 AddToFavorites(name, id, imageUri);
               }}
             >
-              <span className="text-white">
+              <span className="text-white text-base">
                 {isFavorited ? '✔' : '+'}
               </span>
             </button>
