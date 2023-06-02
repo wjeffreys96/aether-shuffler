@@ -1,21 +1,23 @@
-"use client";
-
 import { useReducer, useRef } from "react";
 import Select from "./UI/Inputs/Select";
 import GetCards from "../utils/GetCards";
+import { ref } from "firebase/database";
 
 const initialState = {
   colorId: "",
   cardType: "",
+  cardFunction: "",
   colorIdValid: false,
   cardTypeValid: false,
   colorIdTouched: false,
   cardTypeTouched: false,
+  cardFunctionTouched: false,
   formValid: false,
   error: {
     general: "",
     color_id_error: "",
     card_type_error: "",
+    card_function_error: "",
   },
 };
 
@@ -34,25 +36,19 @@ function reducer(state, action) {
     case "SET_FIELD_TOUCHED_TRUE":
       return { ...state, [action.field]: true };
 
+    case "SET_ERROR":
+      return { ...state, error: action.error };
+
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 }
 
-export default function CardForm({ onFormSubmit }) {
+export default function CardForm({ onFormSubmit, submitRef }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const colorIdRef = useRef(null);
   const cardTypeRef = useRef(null);
-
-  const cardTypeOptions = [
-    { name: "", value: "" },
-    { name: "Artifact", value: "Artifact" },
-    { name: "Enchantment", value: "Enchantment" },
-    { name: "Creature", value: "Creature" },
-    { name: "Instant", value: "Instant" },
-    { name: "Sorcery", value: "Sorcery" },
-    { name: "Planeswalker", value: "Planeswalker" },
-  ];
+  const cardFunctionRef = useRef(null);
 
   const colorIdOptions = [
     { name: "", value: "" },
@@ -62,6 +58,50 @@ export default function CardForm({ onFormSubmit }) {
     { name: "Red", value: "Red" },
     { name: "Green", value: "Green" },
     { name: "Colorless", value: "Colorless" },
+    { name: "Azorius (White/Blue)", value: "Azorius" },
+    { name: "Dimir (Blue/Black)", value: "Dimir" },
+    { name: "Rakdos (Black/Red)", value: "Rakdos" },
+    { name: "Gruul (Red/Green)", value: "Gruul" },
+    { name: "Selesnya (White/Green)", value: "Selesnya" },
+    { name: "Orzhov (White/Black)", value: "Orzhov" },
+    { name: "Izzet (Blue/Red)", value: "Izzet" },
+    { name: "Golgari (Black/Green)", value: "Golgari" },
+    { name: "Boros (White/Red)", value: "Boros" },
+    { name: "Simic (Blue/Green)", value: "Simic" },
+    { name: "Esper (White/Blue/Black)", value: "Esper" },
+    { name: "Grixis (Blue/Black/Red)", value: "Grixis" },
+    { name: "Jund (Black/Red/Green)", value: "Jund" },
+    { name: "Naya (Red/Green/White)", value: "Naya" },
+    { name: "Bant (Green/White/Blue)", value: "Bant" },
+    { name: "Abzan (White/Black/Green)", value: "Abzan" },
+    { name: "Jeskai (Blue/Red/White)", value: "Jeskai" },
+    { name: "Sultai (Black/Green/Blue)", value: "Sultai" },
+    { name: "Mardu (Red/White/Black)", value: "Mardu" },
+    { name: "Temur (Green/Blue/Red)", value: "Temur" },
+    { name: "Glint-Eye (Blue/Red/Green/Black)", value: "Glint-Eye" },
+    { name: "Dune-Brood (Red/Green/White/Black)", value: "Dune-Brood" },
+    { name: "Ink-Treader (Green/White/Blue/Red)", value: "Ink-Treader" },
+    { name: "Witch-Maw (White/Blue/Black/Green)", value: "Witch-Maw" },
+    { name: "Yore-Tiller (Blue/Black/Red/White)", value: "Yore-Tiller" },
+    { name: "WUBRG (All Colors)", value: "WUBRG" },
+  ];
+
+  const cardTypeOptions = [
+    { name: "", value: "" },
+    { name: "Artifact", value: "Artifact" },
+    { name: "Enchantment", value: "Enchantment" },
+    { name: "Creature", value: "Creature" },
+    { name: "Instant", value: "Instant" },
+    { name: "Sorcery", value: "Sorcery" },
+    { name: "Planeswalker", value: "Planeswalker" },
+    { name: "Battle", value: "Battle" },
+  ];
+
+  const cardFunctionOptions = [
+    { name: "", value: "" },
+    { name: "Removal", value: "removal" },
+    { name: "Ramp", value: "ramp" },
+    { name: "Board Wipe", value: "wipe" },
   ];
 
   const handleColorIdBlur = () => {
@@ -76,22 +116,27 @@ export default function CardForm({ onFormSubmit }) {
     dispatch({ type: "CARDTYPE_VALID", value: cardType });
   };
 
+  const handleCardFunctionBlur = () => {
+    dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "cardFunctionTouched" });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const colorId = colorIdRef.current.value;
     const cardType = cardTypeRef.current.value;
-    const formIsValid =
-      state.colorIdValid && state.cardTypeValid
-    const info = {
+    const cardFunction = cardFunctionRef.current.value;
+    const formIsValid = state.colorIdValid && state.cardTypeValid;
+
+    const formData = {
       color_id: colorId,
       card_type: cardType,
+      card_function: cardFunction,
     };
 
     const sendForm = async () => {
-      const data = await GetCards(info);
+      const data = await GetCards(formData, dispatch);
       onFormSubmit(data);
-
     };
 
     if (formIsValid) {
@@ -169,10 +214,31 @@ export default function CardForm({ onFormSubmit }) {
                   />
                 </div>
               </div>
+
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="card_function"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Card Function:
+                </label>
+                <div className="mt-2">
+                  <Select
+                    options={cardFunctionOptions}
+                    onBlur={handleCardFunctionBlur}
+                    ref={cardFunctionRef}
+                    name="card_function"
+                    id="card_function"
+                    autoComplete="card_function"
+                    placeholder="function"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex items-center justify-center gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
             <button
+              ref={submitRef}
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >

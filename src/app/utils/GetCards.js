@@ -1,18 +1,25 @@
-export default async function GetCards({
-  color_id: colorId,
-  card_type: cardType,
-}) {
+export default async function GetCards(
+  { color_id: colorId, card_type: cardType, card_function: cardFunction },
+  dispatch
+) {
   const params = new URLSearchParams({
-    q: `f:commander id:${colorId} ${
+    q: `f:commander id<=${colorId} ${
       colorId != "Colorless" ? "-c:c" : ""
-    } t:${cardType} order:edhrec dir:asc`,
+    } t:${cardType} order:edhrec dir:asc ${
+      cardFunction && "oracletag:" + cardFunction
+    }`,
   });
   const url = `https://api.scryfall.com/cards/search?${params}`;
 
   async function fetcher(url) {
-    const res = await fetch(url);
-    const data = await res.json();
-    return data.data;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.data;
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "SET_ERROR", error: error });
+    }
   }
 
   function selectRandomCards(array, numCards) {
@@ -28,21 +35,29 @@ export default async function GetCards({
 
   const response = await fetcher(url);
 
-  const randomCards = selectRandomCards(response, 25);
+  const randomCards = selectRandomCards(response, 24);
 
-  const cardData = randomCards.map((card) => {
-    const name = card.name;
-    const id = card.id;
-    let imageUri = "";
+  const cardDataMaker = () => {
+    try {
+      const cardData = randomCards.map((card) => {
+        const name = card.name;
+        const id = card.id;
+        let imageUri = "";
 
-    if (card.image_uris) {
-      imageUri = card.image_uris.normal;
-    } else {
-      imageUri = card.card_faces[0].image_uris.normal;
+        if (card.image_uris) {
+          imageUri = card.image_uris.normal;
+        } else {
+          imageUri = card.card_faces[0].image_uris.normal;
+        }
+        return { name, id, imageUri };
+      });
+      return cardData;
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", error: error });
     }
+  };
 
-    return { name, id, imageUri };
-  });
+  const cardData = cardDataMaker();
 
   return cardData;
 }
