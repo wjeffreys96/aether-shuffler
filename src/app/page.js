@@ -2,9 +2,10 @@
 import { useState, useRef } from "react";
 import CardForm from "./components/CardForm";
 import CardList from "./components/CardList";
+import EmptyState from "./components/EmptyState";
 
 export default function Home() {
-  const [cardData, setcardData] = useState([]);
+  const [cardData, setcardData] = useState(null);
   const submitRef = useRef();
 
   const onFormSubmit = (cardData) => {
@@ -17,9 +18,17 @@ export default function Home() {
         <CardForm submitRef={submitRef} onFormSubmit={onFormSubmit} />
       </div>
 
+      <hr className="mx-24 my-6" />
+
       <div className="flex content-center justify-center p-3">
+
         <CardList cardData={cardData} />
+
+        {!cardData && <EmptyState />}
+
       </div>
+
+      <hr className="mx-24 my-6" />
 
       <div className='flex justify-center my-6'>      
         <button

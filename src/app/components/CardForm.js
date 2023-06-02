@@ -101,6 +101,7 @@ export default function CardForm({ onFormSubmit, submitRef }) {
     { name: "", value: "" },
     { name: "Removal", value: "removal" },
     { name: "Ramp", value: "ramp" },
+    { name: "Board Wipe", value: "wipe" },
   ];
 
   const handleColorIdBlur = () => {

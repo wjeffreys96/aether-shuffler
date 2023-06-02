@@ -6,7 +6,7 @@ export default async function GetCards(
     q: `f:commander id<=${colorId} ${
       colorId != "Colorless" ? "-c:c" : ""
     } t:${cardType} order:edhrec dir:asc ${
-      cardFunction && "function:" + cardFunction
+      cardFunction && "oracletag:" + cardFunction
     }`,
   });
   const url = `https://api.scryfall.com/cards/search?${params}`;
