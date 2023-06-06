@@ -5,6 +5,7 @@ import { getAuth } from "firebase/auth";
 import Input from "@/app/components/UI/Inputs/Input";
 import { useRouter } from "next/navigation";
 import RegisterNewUser from "@/app/utils/RegisterNewUser";
+import YupValidator from "@/app/utils/YupValidator";
 
 const initialState = {
   email: "",
@@ -20,37 +21,87 @@ const initialState = {
   passwordAgainTouched: false,
   usernameTouched: false,
   formValid: false,
-  error: {
-    general: "",
-    email_error: "",
-    password_error: "",
-    confirm_password_error: "",
-    username_error: "",
-  },
+  error_general: "",
+  error_email: "",
+  error_password: "",
+  error_passwordAgain: "",
+  error_username: "",
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "SET_ERROR":
-      return { ...state, error: { ...state.error, general: action.error } };
     case "EMAIL_VALID":
-      const emailIsValid =
-        action.value.trim().length > 0 && action.value.trim().length < 50;
-      return { ...state, emailValid: emailIsValid };
+      const emailIsValid = YupValidator(action.value, "EMAIL");
+      if (emailIsValid.error) {
+        return {
+          ...state,
+          emailValid: false,
+          error_email: emailIsValid.error,
+          email: action.value,
+        };
+      } else {
+        return { ...state, emailValid: true, error_email: "" };
+      }
+
     case "PASSWORD_VALID":
-      const passwordIsValid =
-        action.value.trim().length > 0 && action.value.trim().length < 20;
-      return { ...state, passwordValid: passwordIsValid };
+      const passwordIsValid = YupValidator(action.value, "PASSWORD");
+      if (passwordIsValid.error) {
+        return {
+          ...state,
+          passwordValid: false,
+          error_password: passwordIsValid.error,
+        };
+      } else {
+        return {
+          ...state,
+          passwordValid: true,
+          error_password: "",
+          password: action.value,
+        };
+      }
+
     case "PASSWORDAGAIN_VALID":
-      const passwordAgainIsValid =
-        action.value.trim().length > 0 && action.value.trim().length < 20;
-      return { ...state, passwordAgainValid: passwordAgainIsValid };
+      // checks if password matches password again then returns the state accordingly
+      console.log(action.value, state.password);
+      if (action.value === state.password) {
+        return {
+          ...state,
+          passwordAgainValid: true,
+          error_passwordAgain: "",
+          passwordAgain: action.value,
+        };
+      } else {
+        return {
+          ...state,
+          passwordAgainValid: false,
+          error_passwordAgain: "Passwords do not match",
+        };
+      }
+
     case "USERNAME_VALID":
-      const usernameIsValid =
-        action.value.trim().length > 0 && action.value.trim().length < 50;
-      return { ...state, usernameValid: usernameIsValid };
+      const usernameIsValid = YupValidator(action.value, "USERNAME");
+      if (usernameIsValid.error) {
+        return {
+          ...state,
+          usernameValid: false,
+          error_username: usernameIsValid.error,
+          username: action.value,
+        };
+      } else {
+        return {
+          ...state,
+          usernameValid: true,
+          error_username: "",
+          username: action.value,
+        };
+      }
+
     case "SET_FIELD_TOUCHED_TRUE":
       return { ...state, [action.field]: true };
+    
+    case "SET_ERROR_GENERAL":
+      return { ...state, error_general: action.value };
+
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
@@ -100,16 +151,18 @@ export default function RegisterForm() {
       state.emailValid &&
       state.passwordValid &&
       state.passwordAgainValid &&
-      state.usernameValid; // Added username validity check
+      state.usernameValid;
 
     if (formIsValid) {
-      RegisterNewUser(auth, email, password, username, ctx, router);
+      try {
+        RegisterNewUser(auth, email, password, username, ctx, router, dispatch);
+      } catch (error) {
+        console.log("register error: ", error);
+      }
+      
     } else {
-      dispatch({
-        type: "SET_ERROR",
-        error: "Please provide a valid email, password, and username", // Updated error message
-      });
-    }
+      console.log("form is not valid");
+  }
   };
 
   return (
@@ -123,6 +176,8 @@ export default function RegisterForm() {
             <p className="mt-1 text-sm leading-6 text-gray-600">
               We'll never sell or give out your data.
             </p>
+          <div>
+          </div>
             <br />
           </div>
 
@@ -154,6 +209,7 @@ export default function RegisterForm() {
                           : ""
                       }`}
                     />
+                    <p className="text-sm text-red-500">{state.error_email}</p>
                   </div>
                 </div>
 
@@ -179,6 +235,9 @@ export default function RegisterForm() {
                           : ""
                       }`}
                     />
+                    <p className="text-sm text-red-500">
+                      {state.error_username}
+                    </p>
                   </div>
                 </div>
 
@@ -205,6 +264,9 @@ export default function RegisterForm() {
                       } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
                     />
+                    <p className="text-sm text-red-500">
+                      {state.error_password}
+                    </p>
                   </div>
                 </div>
 
@@ -231,13 +293,18 @@ export default function RegisterForm() {
                       } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
                     />
+                    <p className="text-sm text-red-500">
+                      {state.error_passwordAgain}
+                      {state.error_general}
+                    </p>
                   </div>
                 </div>
               </div>
-              <p className="text-sm text-red-600">{state.error.general}</p>
+
             </div>
 
             <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+
               <button
                 type="button"
                 className="text-sm font-semibold leading-6 text-gray-900"
