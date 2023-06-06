@@ -7,7 +7,8 @@ export default function RegisterNewUser(
   password,
   username,
   ctx,
-  router
+  router,
+  dispatch
 ) {
   const db = getDatabase();
 
@@ -23,7 +24,11 @@ export default function RegisterNewUser(
       router.push("/dashboard");
     })
     .catch((error) => {
-      const errorMessage = error.message;
-      dispatch({ type: "SET_ERROR", error: errorMessage });
+      if (error.code === "auth/email-already-in-use") {
+        dispatch({
+          type: "SET_ERROR_GENERAL",
+          value: "That email is already in use",
+        });
+      }
     });
 }
