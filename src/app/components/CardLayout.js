@@ -7,7 +7,7 @@ export default function CardLayout({ name, id, imageUri, onClick, isOverlay, isF
   return (
     <>
       <div key={id} className="flex justify-center my-5">
-        <img className="cursor-pointer" onClick={onClick} height="75%" width="75%" src={imageUri} alt={name} />
+        <img className="cursor-pointer" onClick={onClick} height="80%" width="80%" src={imageUri} alt={name} />
         {isOverlay && (
           <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full" onClick={handleOverlayClick}>
             <button
