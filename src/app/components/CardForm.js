@@ -1,37 +1,25 @@
 import { useReducer, useRef } from "react";
 import Select from "./UI/Inputs/Select";
 import GetCards from "../utils/GetCards";
-import { ref } from "firebase/database";
 
 const initialState = {
   colorId: "",
   cardType: "",
   cardFunction: "",
-  colorIdValid: false,
-  cardTypeValid: false,
-  colorIdTouched: false,
-  cardTypeTouched: false,
-  cardFunctionTouched: false,
-  formValid: false,
-  error: {
-    general: "",
-    color_id_error: "",
-    card_type_error: "",
-    card_function_error: "",
-  },
+  error: "",
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "COLORID_VALID":
-      const colorIdIsValid =
-        action.value.trim().length > 0 && action.value.trim().length < 20;
-      return { ...state, colorIdValid: colorIdIsValid };
+    // case "COLORID_VALID":
+    //   const colorIdIsValid =
+    //     action.value.trim().length > 0 && action.value.trim().length < 20;
+    //   return { ...state, colorIdValid: colorIdIsValid };
 
-    case "CARDTYPE_VALID":
-      const cardTypeIsValid =
-        action.value.trim().length > 0 && action.value.trim().length < 20;
-      return { ...state, cardTypeValid: cardTypeIsValid };
+    // case "CARDTYPE_VALID":
+    //   const cardTypeIsValid =
+    //     action.value.trim().length > 0 && action.value.trim().length < 20;
+    //   return { ...state, cardTypeValid: cardTypeIsValid };
 
     case "SET_FIELD_TOUCHED_TRUE":
       return { ...state, [action.field]: true };
@@ -94,7 +82,6 @@ export default function CardForm({ onFormSubmit, submitRef }) {
     { name: "Instant", value: "Instant" },
     { name: "Sorcery", value: "Sorcery" },
     { name: "Planeswalker", value: "Planeswalker" },
-    { name: "Battle", value: "Battle" },
   ];
 
   const cardFunctionOptions = [
@@ -104,21 +91,21 @@ export default function CardForm({ onFormSubmit, submitRef }) {
     { name: "Board Wipe", value: "wipe" },
   ];
 
-  const handleColorIdBlur = () => {
-    const colorId = colorIdRef.current.value;
-    dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "colorIdTouched" });
-    dispatch({ type: "COLORID_VALID", value: colorId });
-  };
+  // const handleColorIdBlur = () => {
+  //   const colorId = colorIdRef.current.value;
+  //   dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "colorIdTouched" });
+  //   dispatch({ type: "COLORID_VALID", value: colorId });
+  // };
 
-  const handleCardTypeBlur = () => {
-    const cardType = cardTypeRef.current.value;
-    dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "cardTypeTouched" });
-    dispatch({ type: "CARDTYPE_VALID", value: cardType });
-  };
+  // const handleCardTypeBlur = () => {
+  //   const cardType = cardTypeRef.current.value;
+  //   dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "cardTypeTouched" });
+  //   dispatch({ type: "CARDTYPE_VALID", value: cardType });
+  // };
 
-  const handleCardFunctionBlur = () => {
-    dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "cardFunctionTouched" });
-  };
+  // const handleCardFunctionBlur = () => {
+  //   dispatch({ type: "SET_FIELD_TOUCHED_TRUE", field: "cardFunctionTouched" });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -126,7 +113,6 @@ export default function CardForm({ onFormSubmit, submitRef }) {
     const colorId = colorIdRef.current.value;
     const cardType = cardTypeRef.current.value;
     const cardFunction = cardFunctionRef.current.value;
-    const formIsValid = state.colorIdValid && state.cardTypeValid;
 
     const formData = {
       color_id: colorId,
@@ -139,25 +125,29 @@ export default function CardForm({ onFormSubmit, submitRef }) {
       onFormSubmit(data);
     };
 
-    if (formIsValid) {
-      sendForm();
-    } else {
-    }
+    sendForm();
   };
 
   return (
     <div className="space-y-10 divide-y divide-gray-900/10">
-      <div className="grid grid-cols-1 gap-x-8 gap-y-2 pt-10 md:grid-cols-3">
-        <div className="px-4 sm:px-0">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Card Parameters
-          </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            Enter the parameters for the cards you want to find.
-          </p>
-          <br />
-          <p className="text-red-600">{state.error.general}</p>
-        </div>
+      <div className="grid grid-cols-1 gap-x-8 gap-y-2 pt-10 md:grid-cols-3 lg:mx-12">
+          <div className="px-4 sm:px-0">
+            <h2 className="text-base font-semibold leading-7 text-gray-900">
+              Card Search
+            </h2>
+            <p className="text-sm leading-6 text-gray-600 my-6">
+              Enter the parameters for the cards you wish to find. You can
+              search by any combination of color, type, and function.
+              <br />
+              <br />
+              Tap/Click on a card and press the plus button to add it to your
+              favorites. Favorites can be viewed and managed by clicking on your
+              profile picture and selecting "Favorites".
+            </p>
+            {state.error.general && (
+              <p className="text-red-600">{state.error.general}</p>
+            )}
+          </div>
 
         <form
           onSubmit={handleSubmit}
@@ -180,7 +170,7 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                       state.colorIdTouched &&
                       "bg-red-100"
                     }
-                    onBlur={handleColorIdBlur}
+                    // onBlur={handleColorIdBlur}
                     ref={colorIdRef}
                     name="color_id"
                     id="color_id"
@@ -200,7 +190,7 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                 <div className="mt-2">
                   <Select
                     options={cardTypeOptions}
-                    onBlur={handleCardTypeBlur}
+                    // onBlur={handleCardTypeBlur}
                     ref={cardTypeRef}
                     name="card_type"
                     id="card_type"
@@ -225,7 +215,7 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                 <div className="mt-2">
                   <Select
                     options={cardFunctionOptions}
-                    onBlur={handleCardFunctionBlur}
+                    // onBlur={handleCardFunctionBlur}
                     ref={cardFunctionRef}
                     name="card_function"
                     id="card_function"

@@ -3,9 +3,9 @@ export default async function GetCards(
   dispatch
 ) {
   const params = new URLSearchParams({
-    q: `f:commander id<=${colorId} ${
+    q: `${colorId && "f:commander id<=" + colorId} ${
       colorId != "Colorless" ? "-c:c" : ""
-    } t:${cardType} order:edhrec dir:asc ${
+    } ${cardType && "t:" + cardType} order:edhrec dir:asc ${
       cardFunction && "oracletag:" + cardFunction
     }`,
   });

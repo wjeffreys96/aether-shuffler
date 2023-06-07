@@ -81,6 +81,8 @@ export default function Dashboard() {
         ))}
       </div>
 
+      <hr className="mx-24 my-6" />
+
       <div className="text-center my-12">
         {!favorites && (
           <div>
