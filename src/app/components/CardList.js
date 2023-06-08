@@ -8,36 +8,41 @@ export default function CardList({ cardData }) {
   const ctx = useContext(AuthContext);
   const [favoritedCards, setFavoritedCards] = useState([]);
   const [overlayCard, setOverlayCard] = useState(null);
+  const [error, setError] = useState(false);
 
   const hideOverlay = () => {
     setOverlayCard(null);
   };
 
   const cardListMaker = () => {
-    try {
-      return cardData.map((card) => {
-        const isFavorited = favoritedCards.includes(card.id);
-        const isOverlay = overlayCard === card.id;
+    if (cardData) {
+      try {
+        return cardData.map((card) => {
+          const isFavorited = favoritedCards.includes(card.id);
+          const isOverlay = overlayCard === card.id;
 
-        return (
-          <div key={card.name} className="relative flex flex-col ">
-            <CardLayout
-              AddToFavorites={AddToFavorites}
-              key={card.name}
-              name={card.name}
-              id={card.id}
-              imageUri={card.imageUri}
-              onClick={() => setOverlayCard(card.id)}
-              isOverlay={isOverlay}
-              isFavorited={isFavorited}
-              hideOverlay={hideOverlay}
-            />
-          </div>
-        );
-      });
-    } catch (error) {
-      console.error("An error occurred:", error);
-      return <div className="text-red-600 my-12">Error: No Cards Found</div>;
+          return (
+            <div key={card.name} className="relative flex flex-col ">
+              <CardLayout
+                AddToFavorites={AddToFavorites}
+                key={card.name}
+                name={card.name}
+                id={card.id}
+                imageUri={card.imageUri}
+                onClick={() => setOverlayCard(card.id)}
+                isOverlay={isOverlay}
+                isFavorited={isFavorited}
+                hideOverlay={hideOverlay}
+              />
+            </div>
+          );
+        });
+      } catch (error) {
+        console.error("An error occurred:", error);
+        return <div className="text-red-600 my-12">Error: No Cards Found</div>;
+      }
+    } else {
+      return <div className="text-red-600 my-12">No Cards Found!</div>;
     }
   };
 
@@ -50,24 +55,33 @@ export default function CardList({ cardData }) {
   }, [cardData]);
 
   function AddToFavorites(name, id, imageUri) {
-    const db = getDatabase();
-    const user = ctx.user;
-    const uid = user.uid;
-
-    set(ref(db, "users/" + uid + "/favorites/" + id), {
-      name: name,
-      id: id,
-      imageUri: imageUri,
-    }).then(() => {
-      console.log("Added to favorites: ", name, id, imageUri);
-      setFavoritedCards((prevFavorites) => [...prevFavorites, id]);
-    });
+    try {
+      const db = getDatabase();
+      const user = ctx.user;
+      const uid = user.uid;
+      set(ref(db, "users/" + uid + "/favorites/" + id), {
+        name: name,
+        id: id,
+        imageUri: imageUri,
+      }).then(() => {
+        console.log("Added to favorites: ", name, id, imageUri);
+        setFavoritedCards((prevFavorites) => [...prevFavorites, id]);
+      });
+    } catch (error) {
+      console.error("An error occurred:", error);
+      if (error.message === "Cannot read properties of null (reading 'uid')") {
+        setError("Please sign in to add cards to favorites.");
+      }
+    }
   }
 
   return (
-    <div className="flex flex-col w-full h-full">
-      <div className="">
-        <div className="h-auto flex justify-center flex-wrap mx-3">
+    <div className="flexflex-col w-full h-full">
+      {error && (
+        <div className="text-red-500 flex justify-center w-full">{error}</div>
+      )}
+      <div>
+        <div className={`h-auto flex flex-wrap mx-3 justify-center`}>
           {cardList}
         </div>
       </div>
