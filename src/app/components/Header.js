@@ -104,10 +104,10 @@ export default function Header() {
                     </Menu>
                   ) : (
                     <Link
-                      className="text-zinc-100 p-2 rounded-md text-sm font-semibold hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset"
+                      className="flex justify-center rounded-md font-semibold bg-indigo-600 px-2 py-1 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       href="/auth"
                     >
-                      Log In<span aria-hidden="true">&rarr;</span>
+                      Log In<span aria-hidden="true"></span>
                     </Link>
                   )}
                 </div>
