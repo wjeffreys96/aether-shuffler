@@ -9,6 +9,7 @@ export default async function GetCards(
       cardFunction && "oracletag:" + cardFunction
     }`,
   });
+
   const url = `https://api.scryfall.com/cards/search?${params}`;
 
   async function fetcher(url) {
@@ -17,7 +18,6 @@ export default async function GetCards(
       const data = await res.json();
       return data.data;
     } catch (error) {
-      console.log(error);
       dispatch({ type: "SET_ERROR", error: error });
     }
   }

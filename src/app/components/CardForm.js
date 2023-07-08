@@ -11,15 +11,6 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    // case "COLORID_VALID":
-    //   const colorIdIsValid =
-    //     action.value.trim().length > 0 && action.value.trim().length < 20;
-    //   return { ...state, colorIdValid: colorIdIsValid };
-
-    // case "CARDTYPE_VALID":
-    //   const cardTypeIsValid =
-    //     action.value.trim().length > 0 && action.value.trim().length < 20;
-    //   return { ...state, cardTypeValid: cardTypeIsValid };
 
     case "SET_FIELD_TOUCHED_TRUE":
       return { ...state, [action.field]: true };

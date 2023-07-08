@@ -7,7 +7,6 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { AuthContext } from "./AuthContext";
 import { useRouter } from "next/navigation";
-import YupValidator from "../utils/YupValidator";
 
 export default function LoginForm() {
   const auth = getAuth(firebaseApp);
