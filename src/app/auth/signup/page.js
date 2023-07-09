@@ -62,7 +62,6 @@ function reducer(state, action) {
 
     case "PASSWORDAGAIN_VALID":
       // checks if password matches password again then returns the state accordingly
-      console.log(action.value, state.password);
       if (action.value === state.password) {
         return {
           ...state,
@@ -154,14 +153,7 @@ export default function RegisterForm() {
       state.usernameValid;
 
     if (formIsValid) {
-      try {
         RegisterNewUser(auth, email, password, username, ctx, router, dispatch);
-      } catch (error) {
-        console.log("register error: ", error);
-      }
-      
-    } else {
-      console.log("form is not valid");
   }
   };
 

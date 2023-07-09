@@ -38,7 +38,6 @@ export default function CardList({ cardData }) {
           );
         });
       } catch (error) {
-        console.error("An error occurred:", error);
         return <div className="text-red-600 my-12">Error: No Cards Found</div>;
       }
     } else {
@@ -64,13 +63,13 @@ export default function CardList({ cardData }) {
         id: id,
         imageUri: imageUri,
       }).then(() => {
-        console.log("Added to favorites: ", name, id, imageUri);
         setFavoritedCards((prevFavorites) => [...prevFavorites, id]);
       });
     } catch (error) {
-      console.error("An error occurred:", error);
       if (error.message === "Cannot read properties of null (reading 'uid')") {
         setError("Please sign in to add cards to favorites.");
+      } else {
+        setError(error.message);
       }
     }
   }

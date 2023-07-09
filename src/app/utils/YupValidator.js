@@ -35,7 +35,6 @@ export default function YupValidator(obj, key) {
       }
 
     default:
-      console.log("Invalid key");
       return { error: "Invalid key" };
   }
 }
