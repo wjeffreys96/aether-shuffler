@@ -21,8 +21,6 @@ const reducer = (state, action) => {
         token: token,
       };
     case "LOGOUT":
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
       signOut(auth);
       return {
         ...state,
