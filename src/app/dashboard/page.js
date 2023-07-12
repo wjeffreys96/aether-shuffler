@@ -26,7 +26,6 @@ export default function Dashboard() {
     onValue(faveRef, (snapshot) => {
       const dataArray = [];
       const data = snapshot.val();
-      console.log(data);
       for (let key in data) {
         dataArray.push(data[key]);
       }
