@@ -145,7 +145,6 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                       state.colorIdTouched &&
                       "bg-red-100"
                     }
-                    // onBlur={handleColorIdBlur}
                     ref={colorIdRef}
                     name="color_id"
                     id="color_id"
@@ -165,7 +164,6 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                 <div className="mt-2">
                   <Select
                     options={cardTypeOptions}
-                    // onBlur={handleCardTypeBlur}
                     ref={cardTypeRef}
                     name="card_type"
                     id="card_type"
