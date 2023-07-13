@@ -11,7 +11,6 @@ describe("GetCards", () => {
     const cards = await GetCards({}, jest.fn());
     expect(cards.length).toBeLessThanOrEqual(24);
     expect(Array.isArray(cards)).toBe(true);
-    console.log(cards);
   });
 
   it("Every card should have a name, id, and imageUri", async () => {
