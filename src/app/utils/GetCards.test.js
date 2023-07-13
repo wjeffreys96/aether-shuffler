@@ -1,5 +1,5 @@
 import GetCards from "./GetCards";
-import MockCardData from "./MockCardData.json";
+import MockCardData from "../__mocks__/MockCardData.json";
 
 describe("GetCards", () => {
   it("Should get an array with at least 24 cards", async () => {
