@@ -20,6 +20,7 @@ const Select = forwardRef(function Input(
     <div>
       <div className="mt-2">
         <select
+        role="Select"
           value={value}
           onChange={onChange}
           onBlur={onBlur}

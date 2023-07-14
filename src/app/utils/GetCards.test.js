@@ -21,7 +21,10 @@ describe("GetCards", () => {
     });
     const cards = await GetCards({}, jest.fn());
     const hasExpectedProperties = cards.every((card) =>
-      ["name", "id", "imageUri"].every((prop) => prop in card)
+      ["name", "id", "imageUri"].every((prop) => {
+        const value = card[prop];
+        return typeof value === "string" && value !== "";
+      })
     );
     expect(hasExpectedProperties).toBe(true);
   });

@@ -187,8 +187,8 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                 </label>
                 <div className="mt-2">
                   <Select
+                    
                     options={cardFunctionOptions}
-                    // onBlur={handleCardFunctionBlur}
                     ref={cardFunctionRef}
                     name="card_function"
                     id="card_function"
@@ -201,6 +201,7 @@ export default function CardForm({ onFormSubmit, submitRef }) {
           </div>
           <div className="flex items-center justify-center gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
             <button
+              role="submit"
               ref={submitRef}
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
