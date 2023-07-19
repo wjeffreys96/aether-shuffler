@@ -23,14 +23,18 @@ export default async function GetCards(
   }
 
   function selectRandomCards(array, numCards) {
-    const randomSubset = [];
+    try {
+      const randomSubset = [];
 
-    for (let i = 0; i < numCards; i++) {
-      const randomIndex = Math.floor(Math.random() * array.length);
-      const selectedCard = array.splice(randomIndex, 1)[0];
-      randomSubset.push(selectedCard);
+      for (let i = 0; i < numCards; i++) {
+        const randomIndex = Math.floor(Math.random() * array.length);
+        const selectedCard = array.splice(randomIndex, 1)[0];
+        randomSubset.push(selectedCard);
+      }
+      return randomSubset;
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", error: error });
     }
-    return randomSubset;
   }
 
   const response = await fetcher(url);
@@ -58,7 +62,6 @@ export default async function GetCards(
   };
 
   const cardData = cardDataMaker();
-
 
   return cardData;
 }

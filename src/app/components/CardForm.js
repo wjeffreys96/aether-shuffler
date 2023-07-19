@@ -3,18 +3,11 @@ import Select from "./UI/Inputs/Select";
 import GetCards from "../utils/GetCards";
 
 const initialState = {
-  colorId: "",
-  cardType: "",
-  cardFunction: "",
   error: "",
 };
 
 function reducer(state, action) {
   switch (action.type) {
-
-    case "SET_FIELD_TOUCHED_TRUE":
-      return { ...state, [action.field]: true };
-
     case "SET_ERROR":
       return { ...state, error: action.error };
 
@@ -106,23 +99,23 @@ export default function CardForm({ onFormSubmit, submitRef }) {
   return (
     <div className="space-y-10 divide-y divide-gray-900/10">
       <div className="grid grid-cols-1 gap-x-8 gap-y-2 pt-10 md:grid-cols-3 lg:mx-24">
-          <div className="px-4 sm:px-0">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Card Search
-            </h2>
-            <p className="text-sm leading-6 text-gray-600 my-6">
-              Enter the parameters for the cards you wish to find. You can
-              search by any combination of color, type, and function.
-              <br />
-              <br />
-              Tap/Click on a card and press the plus button to add it to your
-              favorites. Favorites can be viewed and managed by clicking on your
-              profile picture and selecting "Favorites".
-            </p>
-            {state.error.general && (
-              <p className="text-red-600">{state.error.general}</p>
-            )}
-          </div>
+        <div className="px-4 sm:px-0">
+          <h2 className="text-base font-semibold leading-7 text-gray-900">
+            Card Search
+          </h2>
+          <p className="text-sm leading-6 text-gray-600 my-6">
+            Enter the parameters for the cards you wish to find. You can search
+            by any combination of color, type, and function.
+            <br />
+            <br />
+            Tap/Click on a card and press the plus button to add it to your
+            favorites. Favorites can be viewed and managed by clicking on your
+            profile picture and selecting "Favorites".
+          </p>
+          {state.error && (
+            <p className="text-red-600">{state.error}</p>
+          )}
+        </div>
 
         <form
           onSubmit={handleSubmit}
@@ -140,11 +133,6 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                 <div className="mt-2">
                   <Select
                     options={colorIdOptions}
-                    className={
-                      !state.colorIdValid &&
-                      state.colorIdTouched &&
-                      "bg-red-100"
-                    }
                     ref={colorIdRef}
                     name="color_id"
                     id="color_id"
@@ -169,11 +157,6 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                     id="card_type"
                     autoComplete="card_type"
                     placeholder="instant"
-                    className={
-                      !state.cardTypeValid &&
-                      state.cardTypeTouched &&
-                      "bg-red-100"
-                    }
                   />
                 </div>
               </div>
@@ -187,7 +170,6 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                 </label>
                 <div className="mt-2">
                   <Select
-                    
                     options={cardFunctionOptions}
                     ref={cardFunctionRef}
                     name="card_function"
