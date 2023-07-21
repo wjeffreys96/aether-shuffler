@@ -1,5 +1,5 @@
 import GetCards from "./GetCards";
-import MockCardData from "../__mocks__/MockCardData.json";
+import MockBulkCardData from "../__mocks__/MockBulkCardData.json";
 
 describe("GetCards", () => {
   afterEach(() => {
@@ -9,7 +9,7 @@ describe("GetCards", () => {
   it("Should get an array with at least 24 cards", async () => {
     global.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({
-        data: MockCardData,
+        data: MockBulkCardData,
       }),
     });
 
@@ -22,7 +22,7 @@ describe("GetCards", () => {
   it("Every card should have a name, id, and imageUri", async () => {
     global.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({
-        data: MockCardData,
+        data: MockBulkCardData,
       }),
     });
 
