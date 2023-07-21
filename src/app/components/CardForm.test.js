@@ -21,8 +21,8 @@ describe("CardForm", () => {
 
     let inputs = [];
 
-    const selects = Array.from(form.getAllByRole("Select"));
-    const buttons = Array.from(form.getAllByRole("submit"));
+    const selects = form.getAllByRole("Select");
+    const buttons = form.getAllByRole("submit");
 
     inputs = inputs.concat(selects, buttons);
 
