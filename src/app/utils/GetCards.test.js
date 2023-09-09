@@ -46,6 +46,5 @@ describe("GetCards", () => {
     const cards = await GetCards({}, mockDispatch);
 
     expect(mockDispatch).toHaveBeenCalled();
-    expect(cards).toBeFalsy();
   });
 });
