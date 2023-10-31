@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Vampiric Tutor",
+    "id": "18bd50f2-c3ba-4217-a2d5-bb771e199706",
+    "imageUri": "https://cards.scryfall.io/normal/front/1/8/18bd50f2-c3ba-4217-a2d5-bb771e199706.jpg?1608910005"
+  },
+  {
+    "name": "Zulaport Cutthroat",
+    "id": "52ef00c1-613a-4cbd-8972-77c41f649431",
+    "imageUri": "https://cards.scryfall.io/normal/front/5/2/52ef00c1-613a-4cbd-8972-77c41f649431.jpg?1674141830"
+  },
+  {
+    "name": "Demonic Tutor",
+    "id": "3bdbc231-5316-4abd-9d8d-d87cff2c9847",
+    "imageUri": "https://cards.scryfall.io/normal/front/3/b/3bdbc231-5316-4abd-9d8d-d87cff2c9847.jpg?1687647503"
+  },
+  {
+    "name": "Infernal Grasp",
+    "id": "17824929-f131-4b8d-addb-66c25323155e",
+    "imageUri": "https://cards.scryfall.io/normal/front/1/7/17824929-f131-4b8d-addb-66c25323155e.jpg?1634349911"
+  },
+  {
+    "name": "Goblin Bombardment",
+    "id": "e262f55e-9239-4a97-a19e-9b08fb34502e",
+    "imageUri": "https://cards.scryfall.io/normal/front/e/2/e262f55e-9239-4a97-a19e-9b08fb34502e.jpg?1626100483"
+  },
+  {
+    "name": "Lightning Bolt",
+    "id": "f29ba16f-c8fb-42fe-aabf-87089cb214a7",
+    "imageUri": "https://cards.scryfall.io/normal/front/f/2/f29ba16f-c8fb-42fe-aabf-87089cb214a7.jpg?1673147852"
+  },
+  {
+    "name": "Putrefy",
+    "id": "36e2a569-ed40-48f5-b39c-749b491bc207",
+    "imageUri": "https://cards.scryfall.io/normal/front/3/6/36e2a569-ed40-48f5-b39c-749b491bc207.jpg?1631235530"
+  },
+  {
+    "name": "Seedborn Muse",
+    "id": "3f5bee0f-ebc8-4f41-91ee-4eed104ad980",
+    "imageUri": "https://cards.scryfall.io/normal/front/3/f/3f5bee0f-ebc8-4f41-91ee-4eed104ad980.jpg?1610161744"
+  },
+  {
+    "name": "Bloom Tender",
+    "id": "fd06fc1f-d8f6-43b0-a795-d759fcdf8272",
+    "imageUri": "https://cards.scryfall.io/normal/front/f/d/fd06fc1f-d8f6-43b0-a795-d759fcdf8272.jpg?1673148027"
+  },
+  {
+    "name": "Bolas's Citadel",
+    "id": "d2124603-d20e-40eb-97f0-a66323397ac2",
+    "imageUri": "https://cards.scryfall.io/normal/front/d/2/d2124603-d20e-40eb-97f0-a66323397ac2.jpg?1591205069"
+  },
+  {
+    "name": "Cyclonic Rift",
+    "id": "ff08e5ed-f47b-4d8e-8b8b-41675dccef8b",
+    "imageUri": "https://cards.scryfall.io/normal/front/f/f/ff08e5ed-f47b-4d8e-8b8b-41675dccef8b.jpg?1598303834"
+  },
+  {
+    "name": "Preordain",
+    "id": "d10b9be3-d4ff-4e3c-b0d5-5ab2c4e6d684",
+    "imageUri": "https://cards.scryfall.io/normal/front/d/1/d10b9be3-d4ff-4e3c-b0d5-5ab2c4e6d684.jpg?1673483979"
+  },
+  {
+    "name": "Scute Swarm",
+    "id": "acd42ebf-6dee-44cc-a023-a7f9b67cfa2f",
+    "imageUri": "https://cards.scryfall.io/normal/front/a/c/acd42ebf-6dee-44cc-a023-a7f9b67cfa2f.jpg?1673484783"
+  },
+  {
+    "name": "Wild Growth",
+    "id": "61efbd57-7e56-4087-beba-18d8445db7dd",
+    "imageUri": "https://cards.scryfall.io/normal/front/6/1/61efbd57-7e56-4087-beba-18d8445db7dd.jpg?1631588253"
+  },
+  {
+    "name": "Fierce Guardianship",
+    "id": "4c5ffa83-c88d-4f5d-851e-a642b229d596",
+    "imageUri": "https://cards.scryfall.io/normal/front/4/c/4c5ffa83-c88d-4f5d-851e-a642b229d596.jpg?1591319453"
+  },
+  {
+    "name": "Pyroblast",
+    "id": "b029eb9a-dd7a-40c2-96c4-0063d9cc002c",
+    "imageUri": "https://cards.scryfall.io/normal/front/b/0/b029eb9a-dd7a-40c2-96c4-0063d9cc002c.jpg?1580014621"
+  },
+  {
+    "name": "Bastion of Remembrance",
+    "id": "2dd354dd-939e-4b1a-8ed6-fe89a7fd64bf",
+    "imageUri": "https://cards.scryfall.io/normal/front/2/d/2dd354dd-939e-4b1a-8ed6-fe89a7fd64bf.jpg?1591226582"
+  },
+  {
+    "name": "Knight of the White Orchid",
+    "id": "f332cd21-46ed-4fff-9fd9-d5975bf0004d",
+    "imageUri": "https://cards.scryfall.io/normal/front/f/3/f332cd21-46ed-4fff-9fd9-d5975bf0004d.jpg?1682208488"
+  },
+  {
+    "name": "Despark",
+    "id": "397d6a06-05f7-412f-a4f1-0ac1e07e733f",
+    "imageUri": "https://cards.scryfall.io/normal/front/3/9/397d6a06-05f7-412f-a4f1-0ac1e07e733f.jpg?1682209709"
+  },
+  {
+    "name": "Force of Negation",
+    "id": "1825a719-1b2a-4af9-9cd2-7cb497cd0317",
+    "imageUri": "https://cards.scryfall.io/normal/front/1/8/1825a719-1b2a-4af9-9cd2-7cb497cd0317.jpg?1673147298"
+  },
+  {
+    "name": "Guardian Project",
+    "id": "ccad6ce0-ddf0-458d-bdae-3d7805fdc775",
+    "imageUri": "https://cards.scryfall.io/normal/front/c/c/ccad6ce0-ddf0-458d-bdae-3d7805fdc775.jpg?1584831168"
+  },
+  {
+    "name": "Spark Double",
+    "id": "bb8a103c-b776-4501-9441-a45b90391045",
+    "imageUri": "https://cards.scryfall.io/normal/front/b/b/bb8a103c-b776-4501-9441-a45b90391045.jpg?1666094645"
+  },
+  {
+    "name": "Phyrexian Arena",
+    "id": "54f69d43-de01-46a8-b102-b47e23e0e947",
+    "imageUri": "https://cards.scryfall.io/normal/front/5/4/54f69d43-de01-46a8-b102-b47e23e0e947.jpg?1675957043"
+  },
+  {
+    "name": "Ghostly Prison",
+    "id": "8169d44d-b15a-47e0-b417-24f2f4945d0f",
+    "imageUri": "https://cards.scryfall.io/normal/front/8/1/8169d44d-b15a-47e0-b417-24f2f4945d0f.jpg?1641601289"
+  }
+]
