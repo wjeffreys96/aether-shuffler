@@ -41,17 +41,20 @@ export default function Home() {
           <EmptyState />
         )}
       </div>
+          <hr className="mx-24 my-6" />
+      {cardData && (
+        <>
 
-      <hr className="mx-24 my-6" />
-
-      <div className="flex justify-center my-6">
-        <button
-          onClick={() => submitRef.current.click()}
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Shuffle
-        </button>
-      </div>
+          <div className="flex justify-center my-6">
+            <button
+              onClick={() => submitRef.current.click()}
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Shuffle
+            </button>
+          </div>
+        </>
+      )}
     </main>
   );
 }

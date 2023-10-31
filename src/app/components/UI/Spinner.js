@@ -1,6 +1,6 @@
 export default function Spinner() {
   return (
-    <div className="flex flex-col justify-center items-center" role="status">
+    <div className="flex flex-col justify-center items-center h-full" role="status">
       <svg
         aria-hidden="true"
         className="w-16 h-16 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

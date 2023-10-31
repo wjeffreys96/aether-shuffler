@@ -136,10 +136,10 @@ export default function Dashboard() {
             <EmptyState />
           )}
         </div>
-
+            <hr className="m-6" />
         {favorites.length === 0 && (
           <>
-            <hr className="m-4" />
+
             <div className="mb-6">
               <button
                 onClick={() => {
