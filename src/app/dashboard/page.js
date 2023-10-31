@@ -7,10 +7,12 @@ import { useRouter } from "next/navigation";
 import Avatar from "../components/UI/Avatar";
 import CardLayout from "../components/CardLayout";
 import EmptyState from "../components/EmptyState";
+import Spinner from "../components/UI/Spinner";
 
 export default function Dashboard() {
   const [user, setUser] = useState("");
   const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
   const ctx = useContext(AuthContext);
   const router = useRouter();
   const stats = [{ label: "Favorite Cards", value: favorites.length }];
@@ -30,6 +32,7 @@ export default function Dashboard() {
         dataArray.push(data[key]);
       }
       setFavorites(dataArray);
+      setLoading(false);
     });
   };
 
@@ -37,14 +40,13 @@ export default function Dashboard() {
     if (ctx.user) {
       setUser(ctx.user);
       getFavorites();
+    } else {
+      setLoading(false);
     }
   }, [ctx.user]);
 
   return (
-    <div className="overflow-hidden rounded-lg">
-      <h2 className="sr-only" id="profile-overview-title">
-        Profile Overview
-      </h2>
+    <main className="min-h-custom flex flex-col">
       <div className="bg-white p-6">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="sm:flex sm:space-x-5">
@@ -69,11 +71,11 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <div className="flex justify-center border-b mx-4">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="px-6 py-5 text-center text-sm font-medium"
+            className="px-6 md:py-3 text-center text-sm font-medium"
           >
             <span className="text-gray-900">{stat.value}</span>{" "}
             <span className="text-gray-600">{stat.label}</span>
@@ -81,22 +83,19 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <hr className="mx-24 my-6" />
-
-      <div className="text-center my-12">
-        {!favorites && (
+      <div className="text-center grow flex flex-col">
+        {favorites.length === 0 && (
           <div>
-            <h3 className="mt-2 text-sm font-semibold text-gray-900">
-              No Cards
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="my-4 text-sm text-gray-500">
               Get started by searching new cards with the shuffler.
             </p>
           </div>
         )}
 
-        <div className="h-auto flex justify-center flex-wrap px-3">
-          {favorites.length > 0 ? (
+        <div className="flex justify-center flex-wrap p-3 grow">
+          {loading ? (
+            <Spinner />
+          ) : favorites.length > 0 ? (
             favorites.map((card) => {
               return (
                 <div key={card.id} className="flex flex-col">
@@ -132,22 +131,33 @@ export default function Dashboard() {
                   </div>
                 </div>
               );
-            })) : <EmptyState /> }
+            })
+          ) : (
+            <EmptyState />
+          )}
         </div>
-        <hr className="m-12" />
-        <div className="mt-6">
-          <button
-            onClick={() => {
-              router.push("/");
-            }}
-            type="button"
-            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
-            Find Cards
-          </button>
-        </div>
+
+        {favorites.length === 0 && (
+          <>
+            <hr className="m-4" />
+            <div className="mb-6">
+              <button
+                onClick={() => {
+                  router.push("/");
+                }}
+                type="button"
+                className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <PlusIcon
+                  className="-ml-0.5 mr-1.5 h-5 w-5"
+                  aria-hidden="true"
+                />
+                Find Cards
+              </button>
+            </div>
+          </>
+        )}
       </div>
-    </div>
+    </main>
   );
 }

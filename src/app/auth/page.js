@@ -65,7 +65,7 @@ export default function LoginForm() {
   }, []);
 
   return (
-    <div>
+    <main className="min-h-custom flex flex-col justify-center">
       <div className="flex min-h-full flex-1 flex-col justify-center pb-24 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-8 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -158,6 +158,6 @@ export default function LoginForm() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

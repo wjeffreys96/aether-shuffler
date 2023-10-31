@@ -16,7 +16,7 @@ function reducer(state, action) {
   }
 }
 
-export default function CardForm({ onFormSubmit, submitRef }) {
+export default function CardForm({ onFormSubmit, submitRef, setLoading }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const colorIdRef = useRef(null);
   const cardTypeRef = useRef(null);
@@ -77,6 +77,7 @@ export default function CardForm({ onFormSubmit, submitRef }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const colorId = colorIdRef.current.value;
     const cardType = cardTypeRef.current.value;
@@ -93,7 +94,9 @@ export default function CardForm({ onFormSubmit, submitRef }) {
       onFormSubmit(data);
     };
 
-    sendForm();
+      sendForm()
+      setLoading(false);
+
   };
 
   return (
@@ -104,13 +107,15 @@ export default function CardForm({ onFormSubmit, submitRef }) {
             Card Search
           </h2>
           <p className="text-sm leading-6 text-gray-600 my-6">
-            Enter the parameters for the cards you wish to find. You can search
-            by any combination of color, type, and function.
+            Welcome to AetherShuffler! This app helps you find new Magic: The Gathering cards.
             <br />
             <br />
-            Tap/Click on a card and press the plus button to add it to your
-            favorites. Favorites can be viewed and managed by clicking on your
-            profile picture and selecting "Favorites".
+             To begin, enter parameters for the kinds of cards you wish to find. You can search
+            by any combination of color identity, type, or function, or enter nothing to find completely random cards!
+            <br />
+            <br />
+            If you create an account, you can favorite any card you've found by tapping/clicking on the card and pressing the plus button. Favorites can be viewed and managed by clicking on your
+            profile picture in the top right and selecting "Favorites".
           </p>
           {state.error && (
             <p className="text-red-600">{state.error}</p>
@@ -128,7 +133,7 @@ export default function CardForm({ onFormSubmit, submitRef }) {
                   htmlFor="color_id"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Color:
+                  Color Identity:
                 </label>
                 <div className="mt-2">
                   <Select
