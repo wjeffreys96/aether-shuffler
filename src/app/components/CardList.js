@@ -66,7 +66,7 @@ export default function CardList({ cardData }) {
         setFavoritedCards((prevFavorites) => [...prevFavorites, id]);
       });
     } catch (error) {
-      if (error.message === "Cannot read properties of null (reading 'uid')") {
+      if (error.message === "Cannot read properties of null (reading 'uid')"  || "user is null") {
         setError("Please sign in to add cards to favorites.");
       } else {
         setError(error.message);
