@@ -3,10 +3,12 @@ import { useState, useRef } from "react";
 import CardForm from "./components/CardForm";
 import CardList from "./components/CardList";
 import EmptyState from "./components/EmptyState";
+import Spinner from "./components/UI/Spinner";
 
 export default function Home() {
   const [cardData, setcardData] = useState(null);
   const [displayCards, setDisplayCards] = useState(false);
+  const [loading, setLoading] = useState(false);
   const submitRef = useRef();
 
   const onFormSubmit = (cardData) => {
@@ -15,17 +17,29 @@ export default function Home() {
   };
 
   return (
-    <main className="w-full">
-      <div className="flex content-center justify-center p-3">
-        <CardForm submitRef={submitRef} onFormSubmit={onFormSubmit} />
+    <main className="min-h-custom flex flex-col justify-center">
+      <div className="flex justify-center p-3">
+        <CardForm
+          submitRef={submitRef}
+          setLoading={setLoading}
+          onFormSubmit={onFormSubmit}
+        />
       </div>
 
       <hr className="mx-24 my-6" />
 
-      <div className="flex content-center justify-center p-3">
-        {displayCards && <CardList cardData={cardData} />}
-
-        {!displayCards && <EmptyState />}
+      <div
+        className={`${
+          loading && "flex-col mx-auto"
+        } flex justify-center p-3 grow`}
+      >
+        {loading ? (
+          <Spinner />
+        ) : displayCards ? (
+          <CardList cardData={cardData} />
+        ) : (
+          <EmptyState />
+        )}
       </div>
 
       <hr className="mx-24 my-6" />
