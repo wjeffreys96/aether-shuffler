@@ -2,13 +2,15 @@
 import firebaseApp from "../lib/firebase";
 import firebase from "firebase/compat/app";
 import "firebaseui/dist/firebaseui.css";
-import { useEffect, useCallback, useContext, useRef } from "react";
+import { useEffect, useCallback, useContext, useRef, useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { AuthContext } from "./AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const auth = getAuth(firebaseApp);
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -17,6 +19,8 @@ export default function LoginForm() {
 
   const handleSignin = (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const auth = getAuth();
@@ -31,6 +35,12 @@ export default function LoginForm() {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          if (errorMessage === "Firebase: Error (auth/wrong-password)." || "Firebase: Error (auth/user-not-found).") {
+            setError("Incorrect credentials - Please try again")
+          } else {
+            setError(errorMessage)
+          }
+    setLoading(false);
         });
   };
 
@@ -116,14 +126,15 @@ export default function LoginForm() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-center">
+              <div className="text-center text-sm text-red-500">
+                {error}
               </div>
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                 >
-                  Sign in
+                  {loading ? "Signing in..." : "Sign in"}
                 </button>
               </div>
             </form>
