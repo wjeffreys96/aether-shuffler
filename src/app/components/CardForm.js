@@ -94,8 +94,11 @@ export default function CardForm({ onFormSubmit, submitRef, setLoading }) {
       onFormSubmit(data);
     };
 
+    // Wait 150ms, otherwise spinner never shows.
+      setTimeout(() => {
       sendForm()
       setLoading(false);
+      }, 150)
 
   };
 
