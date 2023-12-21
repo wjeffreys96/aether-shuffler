@@ -77,7 +77,6 @@ export default function CardForm({ onFormSubmit, submitRef, setLoading }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
 
     const colorId = colorIdRef.current.value;
     const cardType = cardTypeRef.current.value;
@@ -90,12 +89,14 @@ export default function CardForm({ onFormSubmit, submitRef, setLoading }) {
     };
 
     const sendForm = async () => {
+      setLoading(true);
       const data = await GetCards(formData, dispatch);
       onFormSubmit(data);
+      setLoading(false);
     };
 
     sendForm()
-    setLoading(false);
+
   };
 
   return (
