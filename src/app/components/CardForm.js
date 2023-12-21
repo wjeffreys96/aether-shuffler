@@ -94,12 +94,8 @@ export default function CardForm({ onFormSubmit, submitRef, setLoading }) {
       onFormSubmit(data);
     };
 
-    // Wait 150ms, otherwise spinner never shows.
-      setTimeout(() => {
-      sendForm()
-      setLoading(false);
-      }, 150)
-
+    sendForm()
+    setLoading(false);
   };
 
   return (
@@ -113,7 +109,7 @@ export default function CardForm({ onFormSubmit, submitRef, setLoading }) {
             Welcome to AetherShuffler! This app helps you find new Magic: The Gathering cards.
             <br />
             <br />
-             To begin, enter parameters for the kinds of cards you wish to find. You can search
+            To begin, enter parameters for the kinds of cards you wish to find. You can search
             by any combination of color identity, type, or function, or enter nothing to find completely random cards!
             <br />
             <br />
