@@ -75,7 +75,7 @@ export default function CardList({ cardData }) {
   }
 
   return (
-    <div className="flexflex-col w-full h-full">
+    <div className="flex flex-col w-full h-full">
       {error && (
         <div className="text-red-500 flex justify-center w-full">{error}</div>
       )}

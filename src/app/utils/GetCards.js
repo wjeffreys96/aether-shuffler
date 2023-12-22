@@ -18,7 +18,7 @@ export default async function GetCards(
       const data = await res.json();
       return data.data;
     } catch (error) {
-      dispatch({ type: "SET_ERROR", error: error });
+      dispatch({ type: "SET_ERROR", error: error.message });
     }
   }
 
@@ -33,7 +33,7 @@ export default async function GetCards(
       }
       return randomSubset;
     } catch (error) {
-      dispatch({ type: "SET_ERROR", error: error });
+      dispatch({ type: "SET_ERROR", error: error.message });
     }
   }
 
@@ -57,7 +57,7 @@ export default async function GetCards(
       });
       return cardData;
     } catch (error) {
-      dispatch({ type: "SET_ERROR", error: error });
+      dispatch({ type: "SET_ERROR", error: error.message });
     }
   };
 

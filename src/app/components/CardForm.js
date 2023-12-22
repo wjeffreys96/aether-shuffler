@@ -117,9 +117,6 @@ export default function CardForm({ onFormSubmit, submitRef, setLoading }) {
             If you create an account, you can favorite any card you've found by tapping/clicking on the card and pressing the plus button. Favorites can be viewed and managed by clicking on your
             profile picture in the top right and selecting "Favorites".
           </p>
-          {state.error && (
-            <p className="text-red-600">{state.error}</p>
-          )}
         </div>
 
         <form
