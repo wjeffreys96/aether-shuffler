@@ -38,6 +38,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (ctx.user) {
+      console.log(ctx.user);
+
       setUser(ctx.user);
       getFavorites();
     } else {
@@ -62,9 +64,11 @@ export default function Dashboard() {
               )}
             </div>
             <div className="text-center sm:mt-0 sm:pt-1 sm:text-left">
-              <p className="text-left text-sm font-medium text-gray-600">Welcome,</p>
+              <p className="text-left text-sm font-medium text-gray-600">
+                Welcome,
+              </p>
               <p className="text-xl font-bold text-gray-900 sm:text-2xl">
-                {user.displayName ? user.displayName : user.email}
+                {user.displayName}
               </p>
             </div>
           </div>
