@@ -97,7 +97,7 @@ function reducer(state, action) {
 
     case "SET_FIELD_TOUCHED_TRUE":
       return { ...state, [action.field]: true };
-    
+
     case "SET_ERROR_GENERAL":
       return { ...state, error_general: action.value };
 
@@ -142,19 +142,17 @@ export default function RegisterForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const email = emailRef.current.value;
+    const email = usernameRef.current.value + "@aether-shuffler.com";
     const password = passwordRef.current.value;
     const username = usernameRef.current.value;
 
     const formIsValid =
-      state.emailValid &&
-      state.passwordValid &&
-      state.passwordAgainValid &&
-      state.usernameValid;
+      // state.emailValid &&
+      state.passwordValid && state.passwordAgainValid && state.usernameValid;
 
     if (formIsValid) {
-        RegisterNewUser(auth, email, password, username, ctx, router, dispatch);
-  }
+      RegisterNewUser(auth, email, password, username, ctx, router, dispatch);
+    }
   };
 
   return (
@@ -163,14 +161,24 @@ export default function RegisterForm() {
         <div className="grid grid-cols-1 gap-x-2 gap-y-2 pt-10 md:grid-cols-3">
           <div className="px-4 sm:px-0">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Personal Information
+              Account Information
             </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              We'll never sell or give out your data.
-            </p>
-          <div>
-          </div>
             <br />
+            <div className="text-sm text-gray-600">
+              <p>Choose a unique username to sign in with.</p>
+              <br />
+              <p>
+                Your password must contain 8 characters, one uppercase letter,
+                one lowercase letter, one number, and one special character.
+              </p>
+              <br />
+              <p>
+                <span className="text-red-600">WARNING: </span> <br />
+                Because your email is never collected, we are unable to reset
+                your password if you forget it. Make sure to set it to something
+                you will remember.
+              </p>
+            </div>
           </div>
 
           <form
@@ -179,31 +187,31 @@ export default function RegisterForm() {
           >
             <div className="px-4 py-6 sm:p-8">
               <div className="grid max-w-2xl grid-cols-1 gap-x-2 gap-y-2 sm:grid-cols-6">
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Email address:
-                  </label>
-                  <div className="mt-2">
-                    <Input
-                      onBlur={handleEmailBlur}
-                      ref={emailRef}
-                      id="email"
-                      name="email"
-                      type="text"
-                      autoComplete="email"
-                      placeholder="your@email.com"
-                      className={`${
-                        !state.emailValid && state.emailTouched
-                          ? "bg-red-100"
-                          : ""
-                      }`}
-                    />
-                    <p className="text-sm text-red-500">{state.error_email}</p>
-                  </div>
-                </div>
+                {/* <div className="sm:col-span-4"> */}
+                {/*   <label */}
+                {/*     htmlFor="email" */}
+                {/*     className="block text-sm font-medium leading-6 text-gray-900" */}
+                {/*   > */}
+                {/*     Email address: */}
+                {/*   </label> */}
+                {/*   <div className="mt-2"> */}
+                {/*     <Input */}
+                {/*       onBlur={handleEmailBlur} */}
+                {/*       ref={emailRef} */}
+                {/*       id="email" */}
+                {/*       name="email" */}
+                {/*       type="text" */}
+                {/*       autoComplete="email" */}
+                {/*       placeholder="your@email.com" */}
+                {/*       className={`${ */}
+                {/*         !state.emailValid && state.emailTouched */}
+                {/*           ? "bg-red-100" */}
+                {/*           : "" */}
+                {/*       }`} */}
+                {/*     /> */}
+                {/*     <p className="text-sm text-red-500">{state.error_email}</p> */}
+                {/*   </div> */}
+                {/* </div> */}
 
                 <div className="sm:col-span-4">
                   <label
@@ -292,7 +300,6 @@ export default function RegisterForm() {
                   </div>
                 </div>
               </div>
-
             </div>
 
             <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">

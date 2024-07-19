@@ -26,8 +26,10 @@ export default function YupValidator(obj, key) {
       try {
         const passwordSchema = Yup.string()
           .required("Password is required")
-          .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, 
-          "Must contain 8 characters, one Uppercase, one Lowercase, one number and one special character");
+          .matches(
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+            "Must contain 8 characters, one uppercase letter, one lowercase letter, one number, and one special character",
+          );
         const passwordValid = passwordSchema.validateSync(obj);
         return { value: passwordValid };
       } catch (error) {
