@@ -1,1 +1,0 @@
-- [ ] remove unneccessary references across project to email now thats not required to create a profile
